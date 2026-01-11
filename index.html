@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cổng Văn Bản Nội Bộ - xacnhandocvanban V1.5</title>
+    <title>Cổng Văn Bản Số - V1.6 Debug</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -21,13 +21,13 @@
     <div id="loginScreen" class="login-wrapper">
         <div class="login-card">
             <div class="text-center mb-4">
-                <i class="fas fa-shield-alt fa-3x text-primary mb-2"></i>
-                <h4 class="fw-bold text-dark">Cổng Văn Bản Số</h4>
-                <p class="text-muted small">Hệ thống V1.5 (Fix Login)</p>
+                <i class="fas fa-tools fa-3x text-warning mb-2"></i>
+                <h4 class="fw-bold text-dark">Hệ thống V1.6</h4>
+                <p class="text-muted small">Phiên bản Debug lỗi Upload</p>
             </div>
             
             <div class="mb-3">
-                <label class="form-label">Email quản trị (Admin)</label>
+                <label class="form-label">Email Admin</label>
                 <div class="input-group">
                     <span class="input-group-text"><i class="fas fa-envelope"></i></span>
                     <input type="email" id="emailInput" class="form-control" placeholder="deptc@hcmpc.com.vn">
@@ -37,7 +37,7 @@
                 <label class="form-label">Mật khẩu</label>
                 <div class="input-group">
                     <span class="input-group-text"><i class="fas fa-lock"></i></span>
-                    <input type="password" id="passwordInput" class="form-control" placeholder="Nhập mật khẩu">
+                    <input type="password" id="passwordInput" class="form-control" placeholder="Mật khẩu">
                 </div>
             </div>
             <button onclick="handleLogin()" id="btnLogin" class="btn btn-primary w-100 py-2 fw-bold">ĐĂNG NHẬP / TẠO MỚI</button>
@@ -64,6 +64,9 @@
                     <h5 class="mb-0"><i class="fas fa-cloud-upload-alt me-2"></i>Đăng tải Văn bản</h5>
                 </div>
                 <div class="card-body">
+                    <div class="alert alert-info small">
+                        <i class="fas fa-info-circle"></i> <b>Lưu ý:</b> Nếu bị lỗi, hãy kiểm tra tab <b>Rules</b> trong Firebase Storage và Firestore đã để <code>allow write: if true;</code> chưa.
+                    </div>
                     <div class="row g-3">
                         <div class="col-md-6">
                             <label class="form-label">Tên văn bản</label>
@@ -83,8 +86,10 @@
                             </button>
                         </div>
                     </div>
-                    <div id="uploadProgress" class="progress mt-3" style="display:none; height: 10px;">
-                        <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 100%"></div>
+                    <div id="statusLog" class="mt-2 text-danger fw-bold small"></div>
+                    
+                    <div id="uploadProgress" class="progress mt-3" style="display:none; height: 20px;">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 0%">0%</div>
                     </div>
                 </div>
             </div>
@@ -183,19 +188,14 @@
             if (user) {
                 currentUser = user;
                 const email = user.email.toLowerCase();
-                // Admin logic: deptc OR deprc OR admin
                 if (email.includes('deprc') || email.includes('deptc') || email.includes('admin')) {
                     isAdmin = true;
                 }
-                
                 document.getElementById('loginScreen').style.display = 'none';
                 document.getElementById('mainApp').style.display = 'block';
                 document.getElementById('userEmailDisplay').innerText = user.email;
-
                 if (isAdmin) setupAdminView();
                 else setupUserView();
-
-                if (Notification.permission !== "granted") Notification.requestPermission();
                 listenForNewDocs();
             } else {
                 document.getElementById('loginScreen').style.display = 'flex';
@@ -203,7 +203,6 @@
             }
         });
 
-        // --- NEW LOGIN LOGIC (Version 1.5) ---
         async function handleLogin() {
             const email = document.getElementById('emailInput').value;
             const password = document.getElementById('passwordInput').value;
@@ -211,28 +210,19 @@
             const btn = document.getElementById('btnLogin');
 
             if (!email || !password) return errorDiv.innerText = "Vui lòng nhập đủ thông tin";
-
             btn.disabled = true;
-            btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Đang xử lý...';
+            btn.innerHTML = 'Đang xử lý...';
             errorDiv.innerText = "";
 
             try {
-                // 1. Thử đăng nhập
                 await auth.signInWithEmailAndPassword(email, password);
             } catch (error) {
-                // Nếu lỗi là sai thông tin hoặc user không tồn tại (Firebase trả chung 1 lỗi này)
                 if (error.code === 'auth/invalid-login-credentials' || error.message.includes('INVALID_LOGIN_CREDENTIALS') || error.code === 'auth/user-not-found') {
-                    // 2. Thử tạo tài khoản mới (Giả định là người dùng mới)
                     try {
                         await auth.createUserWithEmailAndPassword(email, password);
-                        // Tạo thành công -> Tự động đăng nhập luôn
                     } catch (createErr) {
-                        // Nếu tạo thất bại vì email đã tồn tại -> Nghĩa là user cũ nhưng nhập sai mật khẩu
-                        if (createErr.code === 'auth/email-already-in-use') {
-                            errorDiv.innerText = "Sai mật khẩu! Vui lòng kiểm tra lại.";
-                        } else {
-                            errorDiv.innerText = "Lỗi: " + createErr.message;
-                        }
+                        if (createErr.code === 'auth/email-already-in-use') errorDiv.innerText = "Sai mật khẩu!";
+                        else errorDiv.innerText = "Lỗi: " + createErr.message;
                         btn.disabled = false;
                         btn.innerText = "ĐĂNG NHẬP / TẠO MỚI";
                     }
@@ -249,7 +239,7 @@
             location.reload();
         }
 
-        // --- ADMIN ---
+        // --- ADMIN UPLOAD (ĐÃ NÂNG CẤP) ---
         function setupAdminView() {
             document.getElementById('adminPanel').style.display = 'block';
             document.getElementById('userPanel').style.display = 'none'; 
@@ -264,39 +254,82 @@
             const btn = document.getElementById('btnUpload');
             const progress = document.getElementById('uploadProgress');
             const progressBar = progress.querySelector('.progress-bar');
+            const statusLog = document.getElementById('statusLog');
 
-            if (!title || !file) return alert("Thiếu thông tin!");
+            if (!title || !file) {
+                alert("Vui lòng nhập tên và chọn file!");
+                return;
+            }
 
             btn.disabled = true;
+            statusLog.innerText = "Đang khởi tạo upload...";
             progress.style.display = 'flex';
-            progressBar.style.width = '10%';
+            progressBar.style.width = '0%';
+            progressBar.innerText = "0%";
 
             try {
+                // Upload File
                 const storageRef = storage.ref(`documents/${Date.now()}_${file.name}`);
                 const uploadTask = storageRef.put(file);
 
                 uploadTask.on('state_changed', 
                     (snapshot) => {
                         const p = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                        progressBar.style.width = p + '%';
+                        const pct = Math.round(p) + '%';
+                        progressBar.style.width = pct;
+                        progressBar.innerText = pct;
+                        statusLog.innerText = "Đang tải lên Storage: " + pct;
                     }, 
-                    (error) => { throw error; }, 
-                    async () => {
-                        const url = await uploadTask.snapshot.ref.getDownloadURL();
-                        await db.collection('documents').add({
-                            title: title, url: url, minTime: minTime,
-                            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                            createdBy: currentUser.email
-                        });
-                        alert("Thành công!");
-                        document.getElementById('docTitleInput').value = '';
-                        document.getElementById('fileInput').value = '';
+                    (error) => {
+                        // Bắt lỗi trong quá trình upload (QUAN TRỌNG)
+                        console.error("Upload Error:", error);
+                        let msg = error.message;
+                        if(error.code === 'storage/unauthorized') {
+                            msg = "BỊ CHẶN QUYỀN (403): Bạn chưa bật Storage Rules thành 'allow write: if true' trong Firebase Console.";
+                        }
+                        statusLog.innerText = "Lỗi: " + msg;
+                        alert("Lỗi Upload: " + msg);
+                        
                         btn.disabled = false;
                         progress.style.display = 'none';
+                    }, 
+                    async () => {
+                        // Upload xong -> Lưu vào Firestore
+                        try {
+                            statusLog.innerText = "Upload xong. Đang lưu vào CSDL...";
+                            const url = await uploadTask.snapshot.ref.getDownloadURL();
+                            
+                            await db.collection('documents').add({
+                                title: title, url: url, minTime: minTime,
+                                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                                createdBy: currentUser.email
+                            });
+
+                            statusLog.innerText = "Thành công!";
+                            alert("Đã phát hành văn bản thành công!");
+                            
+                            // Reset
+                            document.getElementById('docTitleInput').value = '';
+                            document.getElementById('fileInput').value = '';
+                            btn.disabled = false;
+                            progress.style.display = 'none';
+                            statusLog.innerText = "";
+                        } catch (dbError) {
+                            console.error("DB Error:", dbError);
+                            let dbMsg = dbError.message;
+                            if(dbError.code === 'permission-denied') {
+                                dbMsg = "Lỗi Firestore: Bạn chưa bật Database Rules thành 'allow write: if true'.";
+                            }
+                            statusLog.innerText = "Lỗi lưu DB: " + dbMsg;
+                            alert(statusLog.innerText);
+                            btn.disabled = false;
+                        }
                     }
                 );
             } catch (error) {
-                alert("Lỗi upload: " + error.message);
+                console.error("Init Error:", error);
+                statusLog.innerText = "Lỗi khởi tạo: " + error.message;
+                alert(statusLog.innerText);
                 btn.disabled = false;
                 progress.style.display = 'none';
             }
@@ -412,12 +445,11 @@
                 if (isFirstLoad) { isFirstLoad = false; return; }
                 if (!snapshot.empty) {
                     const data = snapshot.docs[0].data();
-                    if (data.createdBy !== currentUser.email) showSystemNotification("Văn bản mới!", data.title);
+                    if (data.createdBy !== currentUser.email) {
+                        if (Notification.permission === "granted") new Notification("Văn bản mới!", { body: data.title });
+                    }
                 }
             });
-        }
-        function showSystemNotification(title, body) {
-            if (Notification.permission === "granted") new Notification(title, { body: body, icon: 'https://cdn-icons-png.flaticon.com/512/1042/1042390.png' });
         }
     </script>
 </body>
