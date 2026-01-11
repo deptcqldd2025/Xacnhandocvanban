@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Cổng Phổ Biến Văn Bản - V1.20 HRM Fix</title>
+    <title>Cổng Phổ Biến Văn Bản - V1.21 Profile</title>
     
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#004e9e">
@@ -45,10 +45,9 @@
         .copyright { margin-top: auto; padding: 20px; text-align: center; color: #adb5bd; font-size: 0.8rem; width: 100%; background: #fff; border-top: 1px solid #eee; }
         .main-app .copyright { background: #f0f2f5; border: none; }
 
-        /* Admin Specifics */
+        /* Admin & Table */
         .progress-thin { height: 6px; border-radius: 3px; }
         .btn-toolbar-custom .btn { border-radius: 20px; padding-left: 15px; padding-right: 15px; }
-        /* Staff Table */
         .staff-table-container { max-height: 400px; overflow-y: auto; font-size: 0.85rem; border: 1px solid #eee; }
         .staff-table th { background: #f8f9fa; position: sticky; top: 0; }
     </style>
@@ -93,13 +92,14 @@
                     <span class="badge bg-danger ms-2" id="adminBadge" style="display:none">ADMIN</span>
                 </div>
                 <div class="d-flex align-items-center">
-                    <small class="text-muted me-2 d-none d-md-block" id="userEmailDisplay"></small>
+                    <button onclick="openProfileModal()" class="btn btn-sm btn-outline-primary me-2" title="Thông tin cá nhân">
+                        <i class="fas fa-user-circle me-1"></i> <span class="d-none d-md-inline">Tài khoản</span>
+                    </button>
                     <button onclick="handleLogout()" class="btn btn-sm btn-outline-secondary" title="Đăng xuất"><i class="fas fa-sign-out-alt"></i></button>
                 </div>
             </nav>
 
             <div id="adminPanel" style="display:none;" class="mb-4">
-                
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h6 class="mb-0 fw-bold text-primary"><i class="fas fa-tasks me-2"></i>Quản trị hệ thống</h6>
                     <div class="btn-toolbar-custom">
@@ -160,18 +160,8 @@
                         <div class="card-body p-0">
                             <div class="staff-table-container">
                                 <table class="table table-hover table-striped mb-0 staff-table">
-                                    <thead>
-                                        <tr>
-                                            <th>MSNV</th>
-                                            <th>Họ và tên</th>
-                                            <th>Đơn vị</th>
-                                            <th>Email</th>
-                                            <th>SĐT</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="staffTableBody">
-                                        <tr><td colspan="5" class="text-center text-muted py-3">Chưa có dữ liệu. Vui lòng nhập file Excel.</td></tr>
-                                    </tbody>
+                                    <thead><tr><th>MSNV</th><th>Họ và tên</th><th>Đơn vị</th><th>Email</th><th>SĐT</th></tr></thead>
+                                    <tbody id="staffTableBody"><tr><td colspan="5" class="text-center text-muted py-3">Chưa có dữ liệu.</td></tr></tbody>
                                 </table>
                             </div>
                             <div class="p-2 text-end small text-muted bg-light">
@@ -188,14 +178,7 @@
                     </div>
                     <div class="table-responsive">
                         <table class="table table-hover align-middle mb-0 text-center small">
-                            <thead class="table-light">
-                                <tr>
-                                    <th class="text-start">Văn bản</th>
-                                    <th>Ngày BH</th>
-                                    <th style="width: 30%;">Tiến độ hoàn thành</th>
-                                    <th>Thao tác</th>
-                                </tr>
-                            </thead>
+                            <thead class="table-light"><tr><th class="text-start">Văn bản</th><th>Ngày BH</th><th style="width: 30%;">Tiến độ hoàn thành</th><th>Thao tác</th></tr></thead>
                             <tbody id="adminReportBody"></tbody>
                         </table>
                     </div>
@@ -251,7 +234,48 @@
     </div>
 
     <div class="copyright">
-        © 2026 TCD Software - version 1.20 - Liên hệ 0963.292.882
+        © 2026 TCD Software - version 1.21 - Liên hệ 0963.292.882
+    </div>
+
+    <div class="modal fade" id="profileModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title"><i class="fas fa-id-card me-2"></i>Thông tin cá nhân</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="profileForm">
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">Họ và tên</label>
+                            <input type="text" class="form-control" id="profileName" readonly style="background-color: #e9ecef;">
+                        </div>
+                        <div class="row g-2 mb-3">
+                            <div class="col-6">
+                                <label class="form-label small fw-bold">MSNV</label>
+                                <input type="text" class="form-control" id="profileMsnv" readonly style="background-color: #e9ecef;">
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label small fw-bold">Đơn vị</label>
+                                <input type="text" class="form-control" id="profileUnit" readonly style="background-color: #e9ecef;">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">Email (Tài khoản)</label>
+                            <input type="email" class="form-control" id="profileEmail" readonly style="background-color: #e9ecef;">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold text-primary">Số điện thoại (Có thể cập nhật)</label>
+                            <input type="tel" class="form-control" id="profilePhone" placeholder="Nhập số điện thoại...">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-primary" onclick="updateProfile()">Cập nhật</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="modal fade" id="detailModal" tabindex="-1">
@@ -267,12 +291,8 @@
                         <li class="nav-item"><a class="nav-link text-danger" data-bs-toggle="tab" href="#tabUnread">Chưa đọc (<span id="countUnread">0</span>)</a></li>
                     </ul>
                     <div class="tab-content">
-                        <div class="tab-pane fade show active" id="tabRead">
-                            <ul class="list-group" id="listRead"></ul>
-                        </div>
-                        <div class="tab-pane fade" id="tabUnread">
-                            <ul class="list-group" id="listUnread"></ul>
-                        </div>
+                        <div class="tab-pane fade show active" id="tabRead"><ul class="list-group" id="listRead"></ul></div>
+                        <div class="tab-pane fade" id="tabUnread"><ul class="list-group" id="listUnread"></ul></div>
                     </div>
                 </div>
             </div>
@@ -289,24 +309,12 @@
     <script>
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
 
-        // --- PWA REGISTRATION ---
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('service-worker.js')
-                .then(reg => console.log('SW Registered', reg))
-                .catch(err => console.log('SW Failed', err));
-        }
+        // PWA
+        if ('serviceWorker' in navigator) { navigator.serviceWorker.register('service-worker.js'); }
 
-        // --- CONFIGURATION ---
+        // CONFIG
         const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyqgLvaQbt1dIpQhYedIGURkPBuRZ-i-mJWe_qUBIN9mUOP7Oy0CQI9h3u6fzxfW-Xrkw/exec"; 
-        const firebaseConfig = {
-            apiKey: "AIzaSyDC2PzQxU5K3PaoPIMTW7niXeMEHDOLM8I",
-            authDomain: "xacnhandocvanban.firebaseapp.com",
-            projectId: "xacnhandocvanban",
-            storageBucket: "xacnhandocvanban.firebasestorage.app",
-            messagingSenderId: "352352957922",
-            appId: "1:352352957922:web:6b74ae47b238bf00d335bb",
-            measurementId: "G-G87Z9DV9R7"
-        };
+        const firebaseConfig = { apiKey: "AIzaSyDC2PzQxU5K3PaoPIMTW7niXeMEHDOLM8I", authDomain: "xacnhandocvanban.firebaseapp.com", projectId: "xacnhandocvanban", storageBucket: "xacnhandocvanban.firebasestorage.app", messagingSenderId: "352352957922", appId: "1:352352957922:web:6b74ae47b238bf00d335bb", measurementId: "G-G87Z9DV9R7" };
         if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
@@ -314,23 +322,35 @@
         // STATE
         let currentUser = null;
         let isAdmin = false;
-        let staffList = []; // Array of objects: {msnv, name, unit, email, phone}
-        let docsStats = {}; 
-        let readsData = []; 
+        let staffList = [];
+        let docsStats = {};
+        let readsData = [];
 
-        // AUTH
+        // LOAD STAFF LIST (Global)
+        function loadStaffList() {
+            db.collection('settings').doc('staff').get().then(doc => {
+                if (doc.exists && doc.data().list) {
+                    staffList = doc.data().list;
+                    if(isAdmin) {
+                        document.getElementById('staffListInput').value = staffList.map(s => s.email).join('\n'); // Raw view not fully used but ok
+                        renderStaffTable(staffList);
+                        loadAdminStats();
+                    }
+                }
+            });
+        }
+
         auth.onAuthStateChanged(user => {
             if (user) {
                 currentUser = user;
                 const email = user.email.toLowerCase();
                 isAdmin = (email.includes('deprc') || email.includes('deptc') || email.includes('admin'));
-                
                 document.getElementById('loginScreen').style.display = 'none';
                 document.getElementById('mainApp').style.display = 'block';
                 document.getElementById('userEmailDisplay').innerText = user.email;
                 
-                if (isAdmin) setupAdminView();
-                else setupUserView();
+                loadStaffList(); // Fetch staff info for everyone
+                if (isAdmin) setupAdminView(); else setupUserView();
                 listenForNewDocs();
             } else {
                 document.getElementById('loginScreen').style.display = 'flex';
@@ -338,57 +358,64 @@
             }
         });
 
-        // --- PDF LOGIC ---
-        async function handleFileSelect() {
-            const fileInput = document.getElementById('fileInput');
-            const pageInput = document.getElementById('pageCountInput');
-            const timeInput = document.getElementById('docTimeInput');
-            const file = fileInput.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = async function(e) {
-                    const typedarray = new Uint8Array(e.target.result);
-                    try {
-                        const pdf = await pdfjsLib.getDocument(typedarray).promise;
-                        const pages = pdf.numPages;
-                        pageInput.value = pages;
-                        timeInput.value = pages * 15; 
-                    } catch (error) { console.error(error); pageInput.value = ""; }
-                };
-                reader.readAsArrayBuffer(file);
+        // --- PROFILE FUNCTIONS ---
+        function openProfileModal() {
+            if (!currentUser) return;
+            // Find staff info by email
+            const myInfo = staffList.find(s => s.email && s.email.toLowerCase() === currentUser.email.toLowerCase());
+            
+            document.getElementById('profileEmail').value = currentUser.email;
+            if (myInfo) {
+                document.getElementById('profileName').value = myInfo.name || '';
+                document.getElementById('profileMsnv').value = myInfo.msnv || '';
+                document.getElementById('profileUnit').value = myInfo.unit || '';
+                document.getElementById('profilePhone').value = myInfo.phone || '';
+            } else {
+                document.getElementById('profileName').value = "Chưa có thông tin";
+                document.getElementById('profileMsnv').value = "";
+                document.getElementById('profileUnit').value = "";
+                document.getElementById('profilePhone').value = "";
             }
+            new bootstrap.Modal(document.getElementById('profileModal')).show();
         }
 
-        // --- ADMIN: STAFF MANAGEMENT (LOGIC MỚI - CHO PHÉP EMAIL TRỐNG) ---
+        function updateProfile() {
+            if (!currentUser) return;
+            const newPhone = document.getElementById('profilePhone').value;
+            const userIndex = staffList.findIndex(s => s.email && s.email.toLowerCase() === currentUser.email.toLowerCase());
+
+            if (userIndex === -1) {
+                alert("Bạn chưa có tên trong danh sách nhân sự. Vui lòng liên hệ Admin thêm vào.");
+                return;
+            }
+
+            // Update local state
+            staffList[userIndex].phone = newPhone;
+
+            // Save to DB
+            db.collection('settings').doc('staff').set({ list: staffList })
+                .then(() => {
+                    alert("Cập nhật thông tin thành công!");
+                    bootstrap.Modal.getInstance(document.getElementById('profileModal')).hide();
+                })
+                .catch(err => alert("Lỗi cập nhật: " + err.message));
+        }
+
+        // --- ADMIN: EXCEL & STAFF ---
         function setupAdminView() {
             document.getElementById('adminPanel').style.display = 'block';
             document.getElementById('userPanel').style.display = 'none'; 
             document.getElementById('adminBadge').style.display = 'inline-block';
-            
-            db.collection('settings').doc('staff').get().then(doc => {
-                if (doc.exists && doc.data().list) {
-                    staffList = doc.data().list;
-                    renderStaffTable(staffList);
-                }
-            });
-            loadAdminStats();
         }
 
         function handleStaffExcelUpload() {
-            const fileInput = document.getElementById('staffExcelInput');
-            const file = fileInput.files[0];
+            const file = document.getElementById('staffExcelInput').files[0];
             if(!file) return;
-
             const reader = new FileReader();
             reader.onload = (e) => {
                 const data = new Uint8Array(e.target.result);
                 const workbook = XLSX.read(data, {type: 'array'});
-                const sheetName = workbook.SheetNames[0];
-                const worksheet = workbook.Sheets[sheetName];
-                const json = XLSX.utils.sheet_to_json(worksheet, { header: 1 }); // Array of arrays
-
-                // Parse columns: Tim cac cot MSNV, Don vi, Ho ten, Email, SDT
-                // Convert header to lowercase for easier matching
+                const json = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]], { header: 1 });
                 const header = json[0].map(h => String(h).trim().toLowerCase());
                 
                 const idxMSNV = header.findIndex(h => h.includes('msnv'));
@@ -397,38 +424,22 @@
                 const idxEmail = header.findIndex(h => h.includes('email'));
                 const idxPhone = header.findIndex(h => h.includes('đtdđ') || h.includes('điện thoại'));
 
-                // BẮT BUỘC PHẢI CÓ CỘT MSNV VÀ HỌ TÊN
-                if(idxMSNV === -1 || idxName === -1) {
-                    alert("Lỗi: File Excel bắt buộc phải có cột 'MSNV' và 'Họ và tên'!");
-                    return;
-                }
+                if(idxMSNV === -1 || idxName === -1) return alert("File Excel thiếu cột MSNV hoặc Họ tên!");
 
                 const newStaffList = [];
-                // Start from row 1
                 for(let i=1; i<json.length; i++) {
                     const row = json[i];
-                    const msnv = row[idxMSNV];
-                    const name = row[idxName];
-
-                    // CHỈ BỎ QUA NẾU THIẾU MSNV HOẶC TÊN (Email trống vẫn lấy)
-                    if(!msnv || !name) continue; 
-                    
+                    if(!row[idxMSNV] || !row[idxName]) continue;
                     newStaffList.push({
-                        msnv: msnv,
-                        name: name,
-                        unit: row[idxUnit] || '', // Nếu trống để rỗng
-                        email: row[idxEmail] ? String(row[idxEmail]).trim().toLowerCase() : '', // Nếu trống để rỗng
-                        phone: row[idxPhone] || '' // Nếu trống để rỗng
+                        msnv: row[idxMSNV], name: row[idxName],
+                        unit: row[idxUnit] || '',
+                        email: row[idxEmail] ? String(row[idxEmail]).trim().toLowerCase() : '',
+                        phone: row[idxPhone] || ''
                     });
                 }
-
-                if(newStaffList.length > 0) {
-                    staffList = newStaffList;
-                    renderStaffTable(staffList);
-                    alert(`Đã đọc ${newStaffList.length} nhân viên từ Excel. Hãy bấm "Lưu lại" để cập nhật.`);
-                } else {
-                    alert("Không tìm thấy dữ liệu hợp lệ trong file (kiểm tra lại tên cột MSNV, Họ và tên).");
-                }
+                staffList = newStaffList;
+                renderStaffTable(staffList);
+                alert(`Đã đọc ${newStaffList.length} nhân viên. Hãy bấm "Lưu lại".`);
             };
             reader.readAsArrayBuffer(file);
         }
@@ -437,92 +448,23 @@
             const tbody = document.getElementById('staffTableBody');
             tbody.innerHTML = '';
             document.getElementById('staffCountDisplay').innerText = list.length;
-
-            list.forEach(s => {
-                tbody.innerHTML += `
-                    <tr>
-                        <td>${s.msnv}</td>
-                        <td>${s.name}</td>
-                        <td>${s.unit}</td>
-                        <td>${s.email}</td>
-                        <td>${s.phone}</td>
-                    </tr>
-                `;
-            });
+            list.forEach(s => tbody.innerHTML += `<tr><td>${s.msnv}</td><td>${s.name}</td><td>${s.unit}</td><td>${s.email}</td><td>${s.phone}</td></tr>`);
         }
 
         function saveStaffList() {
-            db.collection('settings').doc('staff').set({ list: staffList })
-                .then(() => {
-                    new bootstrap.Collapse(document.getElementById('staffCollapse'), { toggle: true }).hide();
-                    alert("Đã lưu danh sách nhân viên thành công!");
-                    loadAdminStats(); 
-                });
+            db.collection('settings').doc('staff').set({ list: staffList }).then(() => {
+                new bootstrap.Collapse(document.getElementById('staffCollapse'), { toggle: true }).hide();
+                alert("Lưu thành công!"); loadAdminStats();
+            });
         }
 
-        // --- ADMIN: UPLOAD ---
-        const getBase64 = (file) => new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = () => resolve(reader.result.split(',')[1]); 
-            reader.onerror = error => reject(error);
-        });
-
-        async function uploadDocument() {
-            const title = document.getElementById('docTitleInput').value;
-            const minTime = parseInt(document.getElementById('docTimeInput').value);
-            const file = document.getElementById('fileInput').files[0];
-            const btn = document.getElementById('btnUpload');
-            const statusLog = document.getElementById('statusLog');
-
-            if (!title || !file) return alert("Thiếu thông tin!");
-            btn.disabled = true;
-            statusLog.innerText = "Đang xử lý...";
-
-            try {
-                const base64Data = await getBase64(file);
-                statusLog.innerText = "Đang Upload Drive...";
-                const response = await fetch(GAS_WEB_APP_URL, {
-                    method: 'POST', redirect: 'follow',
-                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                    body: JSON.stringify({ filename: file.name, mimeType: file.type, data: base64Data })
-                });
-                if (!response.ok) throw new Error("Lỗi mạng");
-                const result = await response.json();
-                if(result.status !== 'success') throw new Error(result.message);
-
-                statusLog.innerText = "Đang lưu DB...";
-                await db.collection('documents').add({
-                    title: title, url: result.url, originalUrl: result.originalUrl, minTime: minTime,
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp(), createdBy: currentUser.email
-                });
-
-                statusLog.innerText = "Thành công!";
-                alert("Đã phát hành!");
-                document.getElementById('docTitleInput').value = '';
-                document.getElementById('fileInput').value = '';
-                document.getElementById('pageCountInput').value = '';
-                new bootstrap.Collapse(document.getElementById('uploadCollapse'), { toggle: true }).hide();
-                
-                btn.disabled = false;
-                statusLog.innerText = "";
-            } catch (error) {
-                statusLog.innerText = "Lỗi: " + error.message;
-                btn.disabled = false;
-            }
-        }
-
-        // --- ADMIN: STATS & REPORT (UPDATED) ---
+        // --- ADMIN: STATS ---
         function loadAdminStats() {
             db.collection('reads').onSnapshot(snapshot => {
-                readsData = [];
-                snapshot.forEach(doc => readsData.push(doc.data()));
-                renderAdminTable();
+                readsData = []; snapshot.forEach(doc => readsData.push(doc.data())); renderAdminTable();
             });
             db.collection('documents').orderBy('createdAt', 'desc').onSnapshot(snapshot => {
-                docsStats = {};
-                snapshot.forEach(doc => { docsStats[doc.id] = { ...doc.data(), id: doc.id }; });
-                renderAdminTable();
+                docsStats = {}; snapshot.forEach(doc => docsStats[doc.id] = { ...doc.data(), id: doc.id }); renderAdminTable();
             });
         }
 
@@ -530,152 +472,108 @@
             const tbody = document.getElementById('adminReportBody');
             tbody.innerHTML = '';
             const totalStaff = staffList.length || 1; 
-
             Object.values(docsStats).forEach(doc => {
-                // Sửa logic đếm: So sánh với Email. Nếu nhân viên không có email thì không tính vào đây (hoặc coi như chưa đọc)
-                // Tuy nhiên, do yêu cầu của bạn là import cả người không có email -> những người này sẽ luôn là "Chưa đọc"
                 const readers = new Set(readsData.filter(r => r.docId === doc.id).map(r => r.userEmail));
-                
-                // Đếm số người trong staffList đã đọc (dựa trên email khớp)
-                let count = 0;
-                staffList.forEach(s => {
-                    if (s.email && readers.has(s.email)) count++;
-                });
-
+                let count = 0; staffList.forEach(s => { if (s.email && readers.has(s.email)) count++; });
                 const percent = Math.round((count / totalStaff) * 100);
                 const date = doc.createdAt ? doc.createdAt.toDate().toLocaleDateString('vi-VN') : '';
-
-                tbody.innerHTML += `
-                    <tr>
-                        <td class="text-start text-truncate" style="max-width: 250px;" title="${doc.title}">${doc.title}</td>
-                        <td>${date}</td>
-                        <td>
-                            <div class="progress progress-thin mb-1">
-                                <div class="progress-bar bg-success" style="width: ${percent}%"></div>
-                            </div>
-                            <span class="small fw-bold text-muted">${count}/${totalStaff} (${percent}%)</span>
-                        </td>
-                        <td>
-                            <button class="btn btn-sm btn-outline-primary" onclick="showDetail('${doc.id}')">
-                                <i class="fas fa-info-circle"></i>
-                            </button>
-                        </td>
-                    </tr>
-                `;
+                tbody.innerHTML += `<tr><td class="text-start text-truncate" style="max-width: 250px;">${doc.title}</td><td>${date}</td><td><div class="progress progress-thin mb-1"><div class="progress-bar bg-success" style="width: ${percent}%"></div></div><span class="small fw-bold text-muted">${count}/${totalStaff} (${percent}%)</span></td><td><button class="btn btn-sm btn-outline-primary" onclick="showDetail('${doc.id}')"><i class="fas fa-info-circle"></i></button></td></tr>`;
             });
         }
 
         function showDetail(docId) {
             const doc = docsStats[docId];
             const readers = new Set(readsData.filter(r => r.docId === docId).map(r => r.userEmail));
-            
-            // Map email to Staff Object
             const readListObj = staffList.filter(s => s.email && readers.has(s.email));
             const unreadListObj = staffList.filter(s => !s.email || !readers.has(s.email));
-
+            
             document.getElementById('detailModalTitle').innerText = doc.title;
             document.getElementById('countRead').innerText = readListObj.length;
             document.getElementById('countUnread').innerText = unreadListObj.length;
-
-            const ulRead = document.getElementById('listRead');
-            ulRead.innerHTML = readListObj.length 
-                ? readListObj.map(s => `<li class="list-group-item small"><i class="fas fa-check text-success me-2"></i><b>${s.name}</b> (${s.unit})</li>`).join('') 
-                : '<li class="list-group-item text-muted">Chưa có ai</li>';
-
-            const ulUnread = document.getElementById('listUnread');
-            ulUnread.innerHTML = unreadListObj.length 
-                ? unreadListObj.map(s => `<li class="list-group-item small"><i class="fas fa-times text-danger me-2"></i><b>${s.name}</b> (${s.unit}) ${!s.email ? '<span class="badge bg-warning text-dark ms-1">Chưa có Email</span>' : ''}</li>`).join('') 
-                : '<li class="list-group-item text-muted">Đã đọc hết</li>';
-
+            
+            document.getElementById('listRead').innerHTML = readListObj.length ? readListObj.map(s => `<li class="list-group-item small"><i class="fas fa-check text-success me-2"></i><b>${s.name}</b> (${s.unit})</li>`).join('') : '<li class="list-group-item text-muted">Trống</li>';
+            document.getElementById('listUnread').innerHTML = unreadListObj.length ? unreadListObj.map(s => `<li class="list-group-item small"><i class="fas fa-times text-danger me-2"></i><b>${s.name}</b> ${!s.email?'(Thiếu Email)':''}</li>`).join('') : '<li class="list-group-item text-muted">Đã đọc hết</li>';
             new bootstrap.Modal(document.getElementById('detailModal')).show();
         }
 
         function exportReport() {
             const now = new Date();
             const fileName = `xacnhandocvb_${String(now.getDate()).padStart(2,'0')}${String(now.getMonth()+1).padStart(2,'0')}${String(now.getFullYear()).slice(2)}_${String(now.getHours()).padStart(2,'0')}${String(now.getMinutes()).padStart(2,'0')}.xlsx`;
-
             const data = [];
             Object.values(docsStats).forEach(doc => {
                 const readers = new Set(readsData.filter(r => r.docId === doc.id).map(r => r.userEmail));
                 staffList.forEach(s => {
-                    // Logic xác định trạng thái: Phải có email và email đó nằm trong danh sách đã đọc
-                    const isRead = s.email && readers.has(s.email);
-                    data.push({
-                        "Tên văn bản": doc.title,
-                        "Ngày ban hành": doc.createdAt ? doc.createdAt.toDate().toLocaleDateString('vi-VN') : '',
-                        "MSNV": s.msnv,
-                        "Họ và tên": s.name,
-                        "Đơn vị": s.unit,
-                        "Email": s.email,
-                        "Trạng thái": isRead ? "Đã đọc" : "Chưa đọc",
-                        "Ghi chú": s.email ? "" : "Chưa cập nhật Email"
-                    });
+                    data.push({ "Tên văn bản": doc.title, "Ngày ban hành": doc.createdAt ? doc.createdAt.toDate().toLocaleDateString('vi-VN') : '', "MSNV": s.msnv, "Họ và tên": s.name, "Đơn vị": s.unit, "Email": s.email, "Trạng thái": (s.email && readers.has(s.email)) ? "Đã đọc" : "Chưa đọc" });
                 });
             });
-
-            const ws = XLSX.utils.json_to_sheet(data);
-            const wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, "Báo cáo");
-            XLSX.writeFile(wb, fileName);
+            const ws = XLSX.utils.json_to_sheet(data); const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, "Báo cáo"); XLSX.writeFile(wb, fileName);
         }
 
-        // --- USER & GENERAL LOGIC ---
+        // --- UPLOAD ---
+        async function handleFileSelect() {
+            const file = document.getElementById('fileInput').files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = async function(e) {
+                    try { const pdf = await pdfjsLib.getDocument(new Uint8Array(e.target.result)).promise;
+                        document.getElementById('pageCountInput').value = pdf.numPages;
+                        document.getElementById('docTimeInput').value = pdf.numPages * 15;
+                    } catch (e) { document.getElementById('pageCountInput').value = ""; }
+                }; reader.readAsArrayBuffer(file);
+            }
+        }
+
+        const getBase64 = (file) => new Promise((resolve, reject) => { const reader = new FileReader(); reader.readAsDataURL(file); reader.onload = () => resolve(reader.result.split(',')[1]); reader.onerror = error => reject(error); });
+
+        async function uploadDocument() {
+            const title = document.getElementById('docTitleInput').value;
+            const minTime = parseInt(document.getElementById('docTimeInput').value);
+            const file = document.getElementById('fileInput').files[0];
+            const btn = document.getElementById('btnUpload');
+            const statusLog = document.getElementById('statusLog');
+            if (!title || !file) return alert("Thiếu thông tin!");
+            btn.disabled = true; statusLog.innerText = "Đang xử lý...";
+            try {
+                const base64Data = await getBase64(file);
+                statusLog.innerText = "Đang Upload Drive...";
+                const response = await fetch(GAS_WEB_APP_URL, { method: 'POST', redirect: 'follow', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ filename: file.name, mimeType: file.type, data: base64Data }) });
+                if (!response.ok) throw new Error("Lỗi mạng");
+                const result = await response.json();
+                if(result.status !== 'success') throw new Error(result.message);
+                statusLog.innerText = "Lưu DB...";
+                await db.collection('documents').add({ title: title, url: result.url, originalUrl: result.originalUrl, minTime: minTime, createdAt: firebase.firestore.FieldValue.serverTimestamp(), createdBy: currentUser.email });
+                alert("Phát hành thành công!");
+                document.getElementById('docTitleInput').value = ''; document.getElementById('fileInput').value = ''; document.getElementById('pageCountInput').value = '';
+                new bootstrap.Collapse(document.getElementById('uploadCollapse'), { toggle: true }).hide();
+                btn.disabled = false; statusLog.innerText = "";
+            } catch (error) { statusLog.innerText = "Lỗi: " + error.message; btn.disabled = false; }
+        }
+
+        // --- USER UI ---
         function setupUserView() {
             document.getElementById('adminPanel').style.display = 'none';
             document.getElementById('userPanel').style.display = 'block';
             db.collection('documents').orderBy('createdAt', 'desc').onSnapshot(snapshot => {
-                allDocsData = [];
-                snapshot.forEach(doc => allDocsData.push({ id: doc.id, ...doc.data() }));
-                renderUserDocList();
+                allDocsData = []; snapshot.forEach(doc => allDocsData.push({ id: doc.id, ...doc.data() })); renderUserDocList();
             });
             db.collection('reads').where('userId', '==', currentUser.uid).onSnapshot(snapshot => {
-                userReadIds = new Set();
-                snapshot.forEach(doc => userReadIds.add(doc.data().docId));
-                renderUserDocList(); 
+                userReadIds = new Set(); snapshot.forEach(doc => userReadIds.add(doc.data().docId)); renderUserDocList();
             });
         }
-
-        async function handleLogin() {
-            const email = document.getElementById('emailInput').value;
-            const password = document.getElementById('passwordInput').value;
-            const errorDiv = document.getElementById('loginError');
-            if (!email || !password) return errorDiv.innerText = "Vui lòng nhập đủ thông tin";
-            try {
-                await auth.signInWithEmailAndPassword(email, password);
-            } catch (error) {
-                if (error.code.includes('user-not-found') || error.code.includes('invalid')) {
-                    try { await auth.createUserWithEmailAndPassword(email, password); } 
-                    catch (err) { errorDiv.innerText = "Lỗi đăng nhập/tạo mới: " + err.message; }
-                } else errorDiv.innerText = "Lỗi: " + error.message;
-            }
-        }
-        function togglePassword() {
-            const input = document.getElementById('passwordInput');
-            const icon = document.getElementById('eyeIcon');
-            if (input.type === "password") { input.type = "text"; icon.className = "fas fa-eye-slash"; } 
-            else { input.type = "password"; icon.className = "fas fa-eye"; }
-        }
-        function handleLogout() { auth.signOut(); location.reload(); }
         
         let allDocsData = [], userReadIds = new Set(), currentDoc = null, readTimer = null, timeLeft = 0;
         
         function renderUserDocList() {
             const listEl = document.getElementById('documentList');
             const badgeEl = document.getElementById('readCountBadge');
-            let readCount = 0;
-            listEl.innerHTML = '';
-            
+            let readCount = 0; listEl.innerHTML = '';
             allDocsData.forEach(doc => {
-                const isRead = userReadIds.has(doc.id);
-                if (isRead) readCount++;
+                const isRead = userReadIds.has(doc.id); if (isRead) readCount++;
                 const activeClass = (currentDoc && currentDoc.id === doc.id) ? 'active' : '';
                 const statusHtml = isRead ? `<span class="doc-read-indicator"><i class="fas fa-check-circle"></i> Đã đọc</span>` : `<span class="text-danger small fw-bold">Chưa đọc</span>`;
-                
-                const el = document.createElement('button');
-                el.className = `list-group-item list-group-item-action py-3 ${activeClass}`;
+                const el = document.createElement('button'); el.className = `list-group-item list-group-item-action py-3 ${activeClass}`;
                 el.innerHTML = `<div class="d-flex w-100 justify-content-between mb-1"><h6 class="mb-0 fw-bold text-truncate" style="max-width: 70%;">${doc.title}</h6></div><div class="d-flex justify-content-between"><small class="text-muted">${doc.minTime}s</small>${statusHtml}</div>`;
-                el.onclick = () => openDocument(doc);
-                listEl.appendChild(el);
+                el.onclick = () => openDocument(doc); listEl.appendChild(el);
             });
             badgeEl.innerText = `${readCount}/${allDocsData.length}`;
         }
@@ -685,42 +583,31 @@
             document.getElementById('readingView').style.display = 'block';
             currentDoc = data; renderUserDocList();
             document.getElementById('viewTitle').innerText = data.title;
-            
             const iframe = document.getElementById('pdfViewer');
-            document.getElementById('iframeLoader').style.display = 'flex';
-            iframe.style.opacity = '0';
-            iframe.src = data.url;
+            document.getElementById('iframeLoader').style.display = 'flex'; iframe.style.opacity = '0'; iframe.src = data.url;
             setTimeout(() => { document.getElementById('iframeLoader').style.display = 'none'; iframe.style.opacity = '1'; }, 4000);
-
-            clearInterval(readTimer);
-            timeLeft = data.minTime;
-            const btn = document.getElementById('btnConfirmRead');
-            const timerText = document.getElementById('timerText');
-            const isRead = userReadIds.has(data.id);
-
-            if (isRead) {
-                btn.className = 'btn btn-success disabled'; btn.innerHTML = '<i class="fas fa-check"></i> Đã hoàn thành'; btn.disabled = true; timerText.innerText = "Hoàn tất";
-            } else {
-                btn.className = 'btn btn-secondary'; btn.innerHTML = 'Đang đọc...'; btn.disabled = true;
-                timerText.innerText = timeLeft + "s";
-                readTimer = setInterval(() => {
-                    timeLeft--; timerText.innerText = timeLeft + "s";
-                    if (timeLeft <= 0) { clearInterval(readTimer); btn.disabled = false; btn.className = 'btn btn-primary'; btn.innerHTML = 'Xác nhận đã đọc hiểu'; }
-                }, 1000);
-            }
+            clearInterval(readTimer); timeLeft = data.minTime;
+            const btn = document.getElementById('btnConfirmRead'); const timerText = document.getElementById('timerText');
+            if (userReadIds.has(data.id)) { btn.className = 'btn btn-success disabled'; btn.innerHTML = '<i class="fas fa-check"></i> Đã hoàn thành'; btn.disabled = true; timerText.innerText = "Hoàn tất"; }
+            else { btn.className = 'btn btn-secondary'; btn.innerHTML = 'Đang đọc...'; btn.disabled = true; timerText.innerText = timeLeft + "s"; readTimer = setInterval(() => { timeLeft--; timerText.innerText = timeLeft + "s"; if (timeLeft <= 0) { clearInterval(readTimer); btn.disabled = false; btn.className = 'btn btn-primary'; btn.innerHTML = 'Xác nhận đã đọc hiểu'; } }, 1000); }
         }
         function onIframeLoad() { setTimeout(() => { document.getElementById('iframeLoader').style.display = 'none'; document.getElementById('pdfViewer').style.opacity = '1'; }, 500); }
+        
         async function confirmRead() {
             if (!currentUser || !currentDoc) return;
             document.getElementById('btnConfirmRead').disabled = true;
             await db.collection('reads').add({ userId: currentUser.uid, userEmail: currentUser.email, docId: currentDoc.id, docTitle: currentDoc.title, timestamp: firebase.firestore.FieldValue.serverTimestamp() });
         }
+
+        async function handleLogin() {
+            const email = document.getElementById('emailInput').value; const password = document.getElementById('passwordInput').value;
+            const errorDiv = document.getElementById('loginError'); if (!email || !password) return errorDiv.innerText = "Vui lòng nhập đủ thông tin";
+            try { await auth.signInWithEmailAndPassword(email, password); } catch (error) { if (error.code.includes('user-not-found') || error.code.includes('invalid')) { try { await auth.createUserWithEmailAndPassword(email, password); } catch (err) { errorDiv.innerText = "Lỗi đăng nhập/tạo mới: " + err.message; } } else errorDiv.innerText = "Lỗi: " + error.message; }
+        }
+        function togglePassword() { const input = document.getElementById('passwordInput'); const icon = document.getElementById('eyeIcon'); if (input.type === "password") { input.type = "text"; icon.className = "fas fa-eye-slash"; } else { input.type = "password"; icon.className = "fas fa-eye"; } }
+        function handleLogout() { auth.signOut(); location.reload(); }
         function listenForNewDocs() {
-            let isFirst = true;
-            db.collection('documents').orderBy('createdAt', 'desc').limit(1).onSnapshot(snapshot => {
-                if (isFirst) { isFirst = false; return; }
-                if (!snapshot.empty && snapshot.docs[0].data().createdBy !== currentUser.email && Notification.permission === "granted") new Notification("Văn bản mới!", { body: snapshot.docs[0].data().title });
-            });
+            let isFirst = true; db.collection('documents').orderBy('createdAt', 'desc').limit(1).onSnapshot(snapshot => { if (isFirst) { isFirst = false; return; } if (!snapshot.empty && snapshot.docs[0].data().createdBy !== currentUser.email && Notification.permission === "granted") new Notification("Văn bản mới!", { body: snapshot.docs[0].data().title }); });
         }
     </script>
 </body>
