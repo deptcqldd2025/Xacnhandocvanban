@@ -3,167 +3,324 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cổng Văn Bản Số - V1.12 Final UI</title>
+    <title>Cổng Văn Bản Số - EVNHCMC</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+    
     <style>
-        body { background-color: #f0f2f5; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        .login-wrapper { height: 100vh; display: flex; align-items: center; justify-content: center; }
-        .login-card { width: 100%; max-width: 400px; padding: 2rem; border-radius: 15px; background: white; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
-        .main-app { display: none; padding-top: 20px; padding-bottom: 60px; }
-        
-        /* Viewer Styles */
-        .viewer-container { position: relative; height: 75vh; border: 1px solid #ddd; border-radius: 8px; overflow: hidden; background: #fff; }
-        .doc-viewer { width: 100%; height: 100%; border: none; }
-        
-        /* Loading Overlay */
-        .iframe-loading {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: #f8f9fa; display: flex; flex-direction: column;
-            align-items: center; justify-content: center; z-index: 10;
+        body { 
+            background-color: #fff; 
+            font-family: 'Roboto', sans-serif; 
+            color: #333;
         }
 
-        /* List Styles */
+        /* --- LOGIN SCREEN STYLES (MATCHING REFERENCE) --- */
+        .login-wrapper { 
+            min-height: 100vh; 
+            display: flex; 
+            flex-direction: column;
+            align-items: center; 
+            justify-content: center; 
+            padding: 20px;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        /* Logo & Header */
+        .evn-logo-img {
+            width: 80px;
+            height: auto;
+            margin-bottom: 10px;
+        }
+
+        .brand-text {
+            color: #00367e; /* EVN Blue */
+            font-weight: 900;
+            font-size: 1.4rem;
+            margin: 0;
+            line-height: 1.2;
+        }
+        
+        .brand-subtext {
+            color: #00367e;
+            font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        .app-title {
+            color: #004e9e;
+            font-weight: 700;
+            font-size: 1.3rem;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .app-subtitle {
+            color: #6c757d;
+            font-size: 0.95rem;
+            margin-bottom: 30px;
+        }
+
+        /* Form Inputs */
+        .form-label-custom {
+            font-weight: 700;
+            color: #444;
+            font-size: 0.9rem;
+            display: block;
+            text-align: left;
+            margin-bottom: 8px;
+        }
+
+        .input-group-custom {
+            border: 1px solid #ced4da;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #fff;
+            transition: border-color 0.2s;
+            margin-bottom: 20px;
+        }
+
+        .input-group-custom:focus-within {
+            border-color: #004e9e;
+            box-shadow: 0 0 0 0.2rem rgba(0, 78, 158, 0.1);
+        }
+
+        .input-icon {
+            background: transparent;
+            border: none;
+            color: #999;
+            padding-left: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .form-control-custom {
+            border: none;
+            box-shadow: none;
+            padding: 12px 10px;
+            color: #333;
+            font-size: 0.95rem;
+        }
+        
+        .form-control-custom:focus {
+            box-shadow: none;
+        }
+
+        .form-control-custom::placeholder {
+            color: #adb5bd;
+            font-weight: 400;
+        }
+
+        /* Button */
+        .btn-login-custom {
+            background-color: #004e9e; /* Dark Blue */
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 12px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+            transition: background 0.3s;
+        }
+
+        .btn-login-custom:hover {
+            background-color: #003a75;
+            color: white;
+        }
+
+        .btn-login-custom:disabled {
+            background-color: #7da5d1;
+        }
+
+        /* Footer */
+        .forgot-password {
+            color: #6c757d;
+            text-decoration: none;
+            font-size: 0.9rem;
+            margin-top: 20px;
+            display: inline-block;
+        }
+
+        .copyright {
+            margin-top: 40px;
+            color: #adb5bd;
+            font-size: 0.8rem;
+        }
+
+        /* --- APP MAIN INTERFACE (Hidden by default) --- */
+        .main-app { display: none; padding-top: 20px; padding-bottom: 60px; background-color: #f0f2f5; min-height: 100vh; }
+        .viewer-container { position: relative; height: 75vh; border: 1px solid #ddd; border-radius: 8px; overflow: hidden; background: #fff; }
+        .doc-viewer { width: 100%; height: 100%; border: none; }
+        .iframe-loading { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #f8f9fa; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 10; }
         .list-group-item.active { background-color: #e7f1ff; color: #000; border-color: #dee2e6; }
         .doc-read-indicator { font-size: 0.85em; font-weight: bold; color: #198754; }
-        
         @media (max-width: 768px) { .viewer-container { height: 60vh; } }
+
     </style>
 </head>
 <body>
 
     <div id="loginScreen" class="login-wrapper">
-        <div class="login-card">
-            <div class="text-center mb-4">
-                <i class="fab fa-google-drive fa-3x text-success mb-2"></i>
-                <h4 class="fw-bold text-dark">Hệ thống V1.12</h4>
-                <p class="text-muted small">Phiên bản Ổn định UI</p>
+        <div class="login-container">
+            <div class="mb-4">
+                <img src="https://upload.wikimedia.org/wikipedia/vi/1/1a/Logo_t%E1%BA%ADp_%C4%91o%C3%A0n_%C4%91i%E1%BB%87n_l%E1%BB%B1c.png" alt="EVN Logo" class="evn-logo-img">
+                <h1 class="brand-text">EVN<span style="color:#ed1c24">HCMC</span></h1>
+                <h2 class="brand-subtext">CÔNG TY LƯỚI ĐIỆN CAO THẾ<br>THÀNH PHỐ HỒ CHÍ MINH</h2>
             </div>
-            
-            <div class="mb-3">
-                <label class="form-label">Email</label>
-                <div class="input-group">
-                    <span class="input-group-text"><i class="fas fa-envelope"></i></span>
-                    <input type="email" id="emailInput" class="form-control" placeholder="deptc@hcmpc.com.vn">
+
+            <h3 class="app-title">CỔNG VĂN BẢN SỐ</h3>
+            <p class="app-subtitle">Hệ thống quản lý nội bộ P. Tổng Hợp</p>
+
+            <div style="text-align: left;">
+                <label class="form-label-custom">Email Outlook</label>
+                <div class="input-group-custom d-flex">
+                    <span class="input-icon"><i class="fas fa-envelope"></i></span>
+                    <input type="email" id="emailInput" class="form-control form-control-custom" placeholder="Vi du: namqt@hcmpc.com.vn">
+                </div>
+
+                <label class="form-label-custom">Mật khẩu</label>
+                <div class="input-group-custom d-flex align-items-center">
+                    <span class="input-icon"><i class="fas fa-lock"></i></span>
+                    <input type="password" id="passwordInput" class="form-control form-control-custom" placeholder="Nhập mật khẩu của bạn">
+                    <button class="btn border-0 bg-transparent text-muted" type="button" onclick="togglePassword()">
+                        <i class="fas fa-eye" id="eyeIcon"></i>
+                    </button>
                 </div>
             </div>
-            <div class="mb-3">
-                <label class="form-label">Mật khẩu</label>
-                <div class="input-group">
-                    <span class="input-group-text"><i class="fas fa-lock"></i></span>
-                    <input type="password" id="passwordInput" class="form-control" placeholder="Mật khẩu">
-                </div>
+
+            <button onclick="handleLogin()" id="btnLogin" class="btn-login-custom">
+                ĐĂNG NHẬP <i class="fas fa-arrow-right"></i>
+            </button>
+
+            <div id="loginError" class="text-danger mt-3 small fw-bold"></div>
+
+            <a href="#" class="forgot-password" onclick="alert('Vui lòng liên hệ Admin để cấp lại mật khẩu.')">Quên mật khẩu?</a>
+
+            <div class="copyright">
+                © 2026 IT Department - P.KTVH
             </div>
-            <button onclick="handleLogin()" id="btnLogin" class="btn btn-primary w-100 py-2 fw-bold">ĐĂNG NHẬP</button>
-            <div id="loginError" class="text-danger text-center mt-3 small fw-bold"></div>
         </div>
     </div>
 
-    <div id="mainApp" class="container main-app">
-        <nav class="navbar navbar-light bg-white rounded shadow-sm mb-4 px-3">
-            <div class="d-flex align-items-center">
-                <i class="fas fa-book-reader text-primary me-2 fa-lg"></i>
-                <span class="fw-bold text-dark">Trang chủ</span>
-                <span class="badge bg-danger ms-2" id="adminBadge" style="display:none">QUẢN TRỊ VIÊN</span>
-            </div>
-            <div class="d-flex align-items-center">
-                <small class="text-muted me-2 d-none d-md-block" id="userEmailDisplay"></small>
-                <button onclick="handleLogout()" class="btn btn-sm btn-outline-secondary" title="Đăng xuất"><i class="fas fa-sign-out-alt"></i></button>
-            </div>
-        </nav>
-
-        <div id="adminPanel" style="display:none;" class="mb-4">
-            <div class="card shadow-sm border-0">
-                <div class="card-header bg-success text-white">
-                    <h5 class="mb-0"><i class="fab fa-google-drive me-2"></i>Upload văn bản mới</h5>
+    <div id="mainApp" class="main-app">
+        <div class="container">
+            <nav class="navbar navbar-light bg-white rounded shadow-sm mb-4 px-3">
+                <div class="d-flex align-items-center">
+                    <img src="https://upload.wikimedia.org/wikipedia/vi/1/1a/Logo_t%E1%BA%ADp_%C4%91o%C3%A0n_%C4%91i%E1%BB%87n_l%E1%BB%B1c.png" width="30" class="me-2">
+                    <span class="fw-bold text-dark">Cổng Văn Bản Số</span>
+                    <span class="badge bg-danger ms-2" id="adminBadge" style="display:none">ADMIN</span>
                 </div>
-                <div class="card-body">
-                    <div class="row g-3">
-                        <div class="col-md-6">
-                            <label class="form-label">Tên văn bản</label>
-                            <input type="text" id="docTitleInput" class="form-control" placeholder="Ví dụ: Quy định An toàn điện 2026">
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">Thời gian đọc (giây)</label>
-                            <input type="number" id="docTimeInput" class="form-control" value="15" min="5">
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">File PDF</label>
-                            <input type="file" id="fileInput" class="form-control" accept="application/pdf">
-                        </div>
-                        <div class="col-12 text-end">
-                            <button onclick="uploadDocument()" id="btnUpload" class="btn btn-success px-4">
-                                <i class="fas fa-cloud-upload-alt"></i> Upload & Phát hành
-                            </button>
-                        </div>
-                    </div>
-                    <div id="statusLog" class="mt-2 text-primary fw-bold small"></div>
+                <div class="d-flex align-items-center">
+                    <small class="text-muted me-2 d-none d-md-block" id="userEmailDisplay"></small>
+                    <button onclick="handleLogout()" class="btn btn-sm btn-outline-secondary" title="Đăng xuất"><i class="fas fa-sign-out-alt"></i></button>
                 </div>
-            </div>
-            
-            <div class="card shadow-sm border-0 mt-4">
-                <div class="card-header bg-white fw-bold">Theo dõi tiến độ đọc hiểu</div>
-                <div class="card-body p-0">
-                    <div class="table-responsive" style="max-height: 400px;">
-                        <table class="table table-hover mb-0 align-middle">
-                            <thead class="table-light sticky-top">
-                                <tr>
-                                    <th>Thời gian</th>
-                                    <th>Nhân viên</th>
-                                    <th>Văn bản</th>
-                                    <th>Trạng thái</th>
-                                </tr>
-                            </thead>
-                            <tbody id="adminReportBody"></tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
+            </nav>
 
-        <div id="userPanel">
-            <div class="row">
-                <div class="col-md-4 mb-3">
-                    <div class="card shadow-sm border-0 h-100">
-                        <div class="card-header bg-white fw-bold d-flex justify-content-between align-items-center">
-                            <span>Danh sách văn bản</span>
-                            <span class="badge bg-light text-dark border" id="readCountBadge">0/0</span>
-                        </div>
-                        <div class="list-group list-group-flush" id="documentList" style="max-height: 75vh; overflow-y: auto;">
-                            <div class="text-center p-3 text-muted"><span class="spinner-border spinner-border-sm"></span> Đang tải...</div>
-                        </div>
+            <div id="adminPanel" style="display:none;" class="mb-4">
+                <div class="card shadow-sm border-0">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0"><i class="fab fa-google-drive me-2"></i>Upload văn bản mới</h5>
                     </div>
-                </div>
-
-                <div class="col-md-8">
-                    <div id="emptyState" class="text-center p-5 bg-white rounded shadow-sm h-100 d-flex flex-column justify-content-center align-items-center">
-                        <i class="fas fa-book-reader fa-4x text-muted mb-3"></i>
-                        <h5>Chưa chọn văn bản</h5>
-                        <p class="text-muted">Vui lòng chọn văn bản bên trái để bắt đầu.</p>
-                    </div>
-
-                    <div id="readingView" style="display:none;">
-                        <div class="card shadow-sm border-0">
-                            <div class="card-header bg-white d-flex justify-content-between align-items-center">
-                                <h5 class="mb-0 text-truncate" id="viewTitle" style="max-width: 65%;">Tiêu đề</h5>
-                                <span id="viewStatus" class="badge bg-secondary">Chưa đọc</span>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Tên văn bản</label>
+                                <input type="text" id="docTitleInput" class="form-control" placeholder="Ví dụ: Quy định An toàn điện 2026">
                             </div>
-                            <div class="card-body p-0">
-                                <div class="viewer-container">
-                                    <div id="iframeLoader" class="iframe-loading">
-                                        <div class="spinner-border text-primary mb-2" role="status"></div>
-                                        <small class="text-muted">Đang tải tài liệu...</small>
-                                    </div>
-                                    <iframe id="pdfViewer" class="doc-viewer" src="" onload="onIframeLoad()"></iframe>
-                                </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Thời gian đọc (giây)</label>
+                                <input type="number" id="docTimeInput" class="form-control" value="15" min="5">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">File PDF</label>
+                                <input type="file" id="fileInput" class="form-control" accept="application/pdf">
+                            </div>
+                            <div class="col-12 text-end">
+                                <button onclick="uploadDocument()" id="btnUpload" class="btn btn-success px-4">
+                                    <i class="fas fa-cloud-upload-alt"></i> Upload & Phát hành
+                                </button>
+                            </div>
+                        </div>
+                        <div id="statusLog" class="mt-2 text-primary fw-bold small"></div>
+                    </div>
+                </div>
+                
+                <div class="card shadow-sm border-0 mt-4">
+                    <div class="card-header bg-white fw-bold">Theo dõi tiến độ đọc hiểu</div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive" style="max-height: 400px;">
+                            <table class="table table-hover mb-0 align-middle">
+                                <thead class="table-light sticky-top">
+                                    <tr>
+                                        <th>Thời gian</th>
+                                        <th>Nhân viên</th>
+                                        <th>Văn bản</th>
+                                        <th>Trạng thái</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="adminReportBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-                                <div class="p-3 bg-light border-top d-flex justify-content-between align-items-center flex-wrap gap-2">
-                                    <div class="d-flex align-items-center fw-bold" id="timerContainer">
-                                        <i class="fas fa-hourglass-half me-2"></i> <span id="timerText">00:00</span>
+            <div id="userPanel">
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <div class="card shadow-sm border-0 h-100">
+                            <div class="card-header bg-white fw-bold d-flex justify-content-between align-items-center">
+                                <span>Danh sách văn bản</span>
+                                <span class="badge bg-light text-dark border" id="readCountBadge">0/0</span>
+                            </div>
+                            <div class="list-group list-group-flush" id="documentList" style="max-height: 75vh; overflow-y: auto;">
+                                <div class="text-center p-3 text-muted"><span class="spinner-border spinner-border-sm"></span> Đang tải...</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-8">
+                        <div id="emptyState" class="text-center p-5 bg-white rounded shadow-sm h-100 d-flex flex-column justify-content-center align-items-center">
+                            <i class="fas fa-book-reader fa-4x text-muted mb-3"></i>
+                            <h5>Chưa chọn văn bản</h5>
+                            <p class="text-muted">Vui lòng chọn văn bản bên trái để bắt đầu.</p>
+                        </div>
+
+                        <div id="readingView" style="display:none;">
+                            <div class="card shadow-sm border-0">
+                                <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                                    <h5 class="mb-0 text-truncate" id="viewTitle" style="max-width: 65%;">Tiêu đề</h5>
+                                    <span id="viewStatus" class="badge bg-secondary">Chưa đọc</span>
+                                </div>
+                                <div class="card-body p-0">
+                                    <div class="viewer-container">
+                                        <div id="iframeLoader" class="iframe-loading">
+                                            <div class="spinner-border text-primary mb-2" role="status"></div>
+                                            <small class="text-muted">Đang tải tài liệu...</small>
+                                        </div>
+                                        <iframe id="pdfViewer" class="doc-viewer" src="" onload="onIframeLoad()"></iframe>
                                     </div>
-                                    <button id="btnConfirmRead" onclick="confirmRead()" class="btn btn-secondary" disabled>
-                                        <i class="fas fa-check-circle me-1"></i> Xác nhận đã đọc hiểu
-                                    </button>
+                                    <div class="p-3 bg-light border-top d-flex justify-content-between align-items-center flex-wrap gap-2">
+                                        <div class="d-flex align-items-center fw-bold" id="timerContainer">
+                                            <i class="fas fa-hourglass-half me-2"></i> <span id="timerText">00:00</span>
+                                        </div>
+                                        <button id="btnConfirmRead" onclick="confirmRead()" class="btn btn-secondary" disabled>
+                                            <i class="fas fa-check-circle me-1"></i> Xác nhận đã đọc hiểu
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -178,7 +335,20 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 
     <script>
-        // --- CONFIGURATION ---
+        // --- UI FUNCTION: TOGGLE PASSWORD ---
+        function togglePassword() {
+            const input = document.getElementById('passwordInput');
+            const icon = document.getElementById('eyeIcon');
+            if (input.type === "password") {
+                input.type = "text";
+                icon.className = "fas fa-eye-slash";
+            } else {
+                input.type = "password";
+                icon.className = "fas fa-eye";
+            }
+        }
+
+        // --- BACKEND LOGIC (KEPT INTACT FROM V1.12) ---
         const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyqgLvaQbt1dIpQhYedIGURkPBuRZ-i-mJWe_qUBIN9mUOP7Oy0CQI9h3u6fzxfW-Xrkw/exec"; 
         
         const firebaseConfig = {
@@ -201,8 +371,6 @@
         let currentDoc = null;
         let readTimer = null;
         let timeLeft = 0;
-        
-        // Data Sync
         let allDocsData = []; 
         let userReadIds = new Set(); 
 
@@ -219,10 +387,9 @@
                 
                 if (isAdmin) setupAdminView();
                 else setupUserView();
-                
                 listenForNewDocs();
             } else {
-                document.getElementById('loginScreen').style.display = 'flex';
+                document.getElementById('loginScreen').style.display = 'flex'; // Flex for centering
                 document.getElementById('mainApp').style.display = 'none';
             }
         });
@@ -235,7 +402,7 @@
 
             if (!email || !password) return errorDiv.innerText = "Vui lòng nhập đủ thông tin";
             btn.disabled = true;
-            btn.innerHTML = 'Đang xử lý...';
+            btn.innerHTML = 'ĐANG XỬ LÝ...';
             errorDiv.innerText = "";
 
             try {
@@ -247,12 +414,12 @@
                     } catch (createErr) {
                         errorDiv.innerText = createErr.code === 'auth/email-already-in-use' ? "Sai mật khẩu!" : "Lỗi: " + createErr.message;
                         btn.disabled = false;
-                        btn.innerText = "ĐĂNG NHẬP";
+                        btn.innerHTML = 'ĐĂNG NHẬP <i class="fas fa-arrow-right"></i>';
                     }
                 } else {
                     errorDiv.innerText = "Lỗi: " + error.message;
                     btn.disabled = false;
-                    btn.innerText = "ĐĂNG NHẬP";
+                    btn.innerHTML = 'ĐĂNG NHẬP <i class="fas fa-arrow-right"></i>';
                 }
             }
         }
@@ -285,38 +452,26 @@
             const statusLog = document.getElementById('statusLog');
 
             if (!title || !file) return alert("Vui lòng nhập tên và chọn file PDF!");
-
             btn.disabled = true;
             statusLog.innerText = "Đang xử lý file...";
 
             try {
                 const base64Data = await getBase64(file);
                 statusLog.innerText = "Đang gửi sang Drive... (Vui lòng đợi)";
-                
                 const response = await fetch(GAS_WEB_APP_URL, {
                     method: 'POST',
                     redirect: 'follow',
                     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                    body: JSON.stringify({
-                        filename: file.name,
-                        mimeType: file.type,
-                        data: base64Data
-                    })
+                    body: JSON.stringify({ filename: file.name, mimeType: file.type, data: base64Data })
                 });
-                
                 if (!response.ok) throw new Error("Lỗi kết nối: " + response.status);
                 const result = await response.json();
                 if(result.status !== 'success') throw new Error(result.message);
 
                 statusLog.innerText = "Upload xong. Đang lưu DB...";
                 await db.collection('documents').add({
-                    title: title,
-                    url: result.url,
-                    originalUrl: result.originalUrl,
-                    minTime: minTime,
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                    createdBy: currentUser.email,
-                    storageType: 'google_drive'
+                    title: title, url: result.url, originalUrl: result.originalUrl, minTime: minTime,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(), createdBy: currentUser.email, storageType: 'google_drive'
                 });
 
                 statusLog.innerText = "Thành công!";
@@ -345,24 +500,18 @@
             });
         }
 
-        // --- USER FUNCTIONS ---
+        // --- USER ---
         function setupUserView() {
             document.getElementById('adminPanel').style.display = 'none';
             document.getElementById('userPanel').style.display = 'block';
-            
             db.collection('documents').orderBy('createdAt', 'desc').onSnapshot(snapshot => {
                 allDocsData = [];
-                snapshot.forEach(doc => {
-                    allDocsData.push({ id: doc.id, ...doc.data() });
-                });
+                snapshot.forEach(doc => allDocsData.push({ id: doc.id, ...doc.data() }));
                 renderDocumentList();
             });
-
             db.collection('reads').where('userId', '==', currentUser.uid).onSnapshot(snapshot => {
                 userReadIds = new Set();
-                snapshot.forEach(doc => {
-                    userReadIds.add(doc.data().docId);
-                });
+                snapshot.forEach(doc => userReadIds.add(doc.data().docId));
                 renderDocumentList(); 
             });
         }
@@ -370,81 +519,48 @@
         function renderDocumentList() {
             const listEl = document.getElementById('documentList');
             const badgeEl = document.getElementById('readCountBadge');
-            
-            // Lưu lại vị trí cuộn
             const scrollTop = listEl.scrollTop;
-            
             listEl.innerHTML = '';
             
             if (allDocsData.length === 0) {
                 listEl.innerHTML = '<div class="text-center p-3">Chưa có văn bản.</div>';
                 return;
             }
-
             let readCount = 0;
-
             allDocsData.forEach(doc => {
                 const isRead = userReadIds.has(doc.id);
                 if (isRead) readCount++;
                 const activeClass = (currentDoc && currentDoc.id === doc.id) ? 'active' : '';
-                
                 const el = document.createElement('button');
                 el.className = `list-group-item list-group-item-action py-3 ${activeClass}`;
-                
-                let statusHtml = isRead 
-                    ? `<span class="doc-read-indicator"><i class="fas fa-check-circle"></i> Đã đọc</span>`
-                    : `<span class="text-danger small"><i class="fas fa-exclamation-circle"></i> Chưa đọc</span>`;
-
-                el.innerHTML = `
-                    <div class="d-flex w-100 justify-content-between align-items-center mb-1">
-                        <h6 class="mb-0 fw-bold text-truncate" style="max-width: 70%;">${doc.title}</h6>
-                    </div>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <small class="${isRead ? '' : 'text-muted'}"><i class="far fa-clock"></i> ${doc.minTime}s</small>
-                        ${statusHtml}
-                    </div>
-                `;
+                let statusHtml = isRead ? `<span class="doc-read-indicator"><i class="fas fa-check-circle"></i> Đã đọc</span>` : `<span class="text-danger small"><i class="fas fa-exclamation-circle"></i> Chưa đọc</span>`;
+                el.innerHTML = `<div class="d-flex w-100 justify-content-between align-items-center mb-1"><h6 class="mb-0 fw-bold text-truncate" style="max-width: 70%;">${doc.title}</h6></div><div class="d-flex justify-content-between align-items-center"><small class="${isRead ? '' : 'text-muted'}"><i class="far fa-clock"></i> ${doc.minTime}s</small>${statusHtml}</div>`;
                 el.onclick = () => openDocument(doc);
                 listEl.appendChild(el);
             });
-            
             badgeEl.innerText = `${readCount}/${allDocsData.length} Đã đọc`;
-            
-            // Khôi phục vị trí cuộn
             listEl.scrollTop = scrollTop;
         }
 
         function openDocument(data) {
-            // >>> QUAN TRỌNG: Chuyển đổi giao diện NGAY LẬP TỨC <<<
             document.getElementById('emptyState').style.setProperty('display', 'none', 'important');
             document.getElementById('readingView').style.display = 'block';
-
             currentDoc = data;
             renderDocumentList(); 
             document.getElementById('viewTitle').innerText = data.title;
-            
-            // Xử lý Loader
             const iframe = document.getElementById('pdfViewer');
             const loader = document.getElementById('iframeLoader');
-            
             loader.style.display = 'flex'; 
             iframe.style.opacity = '0'; 
             iframe.src = data.url; 
-            
-            // Timeout an toàn: Nếu sau 5s iframe chưa load xong thì cứ hiện ra
-            setTimeout(() => {
-                loader.style.display = 'none';
-                iframe.style.opacity = '1';
-            }, 5000);
+            setTimeout(() => { loader.style.display = 'none'; iframe.style.opacity = '1'; }, 5000);
 
-            // Logic Timer
             clearInterval(readTimer);
             timeLeft = data.minTime;
             const btn = document.getElementById('btnConfirmRead');
             const timerText = document.getElementById('timerText');
             const timerContainer = document.getElementById('timerContainer');
             const statusBadge = document.getElementById('viewStatus');
-            
             const isRead = userReadIds.has(data.id);
 
             if (isRead) {
@@ -463,7 +579,6 @@
                 btn.disabled = true;
                 timerContainer.className = "d-flex align-items-center text-danger fw-bold";
                 timerText.innerText = timeLeft + "s";
-                
                 readTimer = setInterval(() => {
                     timeLeft--;
                     timerText.innerText = timeLeft + "s";
@@ -496,18 +611,16 @@
                     docId: currentDoc.id, docTitle: currentDoc.title,
                     timestamp: firebase.firestore.FieldValue.serverTimestamp()
                 });
-                // UI tự động cập nhật nhờ Listener
             } catch (error) {
                 alert("Lỗi: " + error.message);
                 btn.disabled = false;
             }
         }
 
-        // NOTIFICATION
-        let isFirstLoad = true;
         function listenForNewDocs() {
+            let isFirst = true;
             db.collection('documents').orderBy('createdAt', 'desc').limit(1).onSnapshot(snapshot => {
-                if (isFirstLoad) { isFirstLoad = false; return; }
+                if (isFirst) { isFirst = false; return; }
                 if (!snapshot.empty) {
                     const data = snapshot.docs[0].data();
                     if (data.createdBy !== currentUser.email) {
