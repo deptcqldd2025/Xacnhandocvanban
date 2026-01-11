@@ -3,161 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cổng Phổ Biến Văn Bản - EVNHCMC</title>
+    <title>Cổng Phổ Biến Văn Bản - V1.16 Pro Admin</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
     
     <style>
-        body { 
-            background-color: #fff; 
-            font-family: 'Roboto', sans-serif; 
-            color: #333;
-        }
-
-        /* --- LOGIN SCREEN STYLES --- */
-        .login-wrapper { 
-            min-height: 100vh; 
-            display: flex; 
-            flex-direction: column;
-            align-items: center; 
-            justify-content: center; 
-            padding: 20px;
-        }
-
-        .login-container {
-            width: 100%;
-            max-width: 400px;
-            text-align: center;
-        }
-
-        /* Logo */
-        .evn-logo-full {
-            width: 100%;
-            max-width: 280px;
-            height: auto;
-            margin-bottom: 25px;
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .app-title {
-            color: #004e9e; /* EVN Blue */
-            font-weight: 700;
-            font-size: 1.4rem;
-            text-transform: uppercase;
-            margin-bottom: 5px;
-        }
-
-        .app-subtitle {
-            color: #6c757d;
-            font-size: 0.95rem;
-            margin-bottom: 30px;
-            font-weight: 500;
-        }
-
-        /* Form Inputs */
-        .form-label-custom {
-            font-weight: 700;
-            color: #444;
-            font-size: 0.9rem;
-            display: block;
-            text-align: left;
-            margin-bottom: 8px;
-        }
-
-        .input-group-custom {
-            border: 1px solid #ced4da;
-            border-radius: 8px;
-            overflow: hidden;
-            background: #fff;
-            transition: border-color 0.2s;
-            margin-bottom: 20px;
-        }
-
-        .input-group-custom:focus-within {
-            border-color: #004e9e;
-            box-shadow: 0 0 0 0.2rem rgba(0, 78, 158, 0.1);
-        }
-
-        .input-icon {
-            background: transparent;
-            border: none;
-            color: #999;
-            padding-left: 15px;
-            display: flex;
-            align-items: center;
-        }
-
-        .form-control-custom {
-            border: none;
-            box-shadow: none;
-            padding: 12px 10px;
-            color: #333;
-            font-size: 0.95rem;
-        }
+        body { background-color: #f0f2f5; font-family: 'Roboto', sans-serif; color: #333; display: flex; flex-direction: column; min-height: 100vh; }
         
-        .form-control-custom:focus {
-            box-shadow: none;
-        }
-
-        .form-control-custom::placeholder {
-            color: #adb5bd;
-            font-weight: 400;
-        }
-
-        /* Button */
-        .btn-login-custom {
-            background-color: #004e9e; /* Dark Blue */
-            border: none;
-            border-radius: 8px;
-            color: white;
-            font-weight: 700;
-            text-transform: uppercase;
-            padding: 12px;
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 10px;
-            transition: background 0.3s;
-        }
-
-        .btn-login-custom:hover {
-            background-color: #003a75;
-            color: white;
-        }
-
-        .btn-login-custom:disabled {
-            background-color: #7da5d1;
-        }
-
-        /* Footer */
-        .forgot-password {
-            color: #6c757d;
-            text-decoration: none;
-            font-size: 0.9rem;
-            margin-top: 20px;
-            display: inline-block;
-        }
-
-        .copyright {
-            margin-top: 40px;
-            color: #adb5bd;
-            font-size: 0.8rem;
-        }
-
-        /* --- APP MAIN INTERFACE --- */
-        .main-app { display: none; padding-top: 20px; padding-bottom: 60px; background-color: #f0f2f5; min-height: 100vh; }
+        /* LOGIN STYLES */
+        .login-wrapper { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; background: #fff; }
+        .login-container { width: 100%; max-width: 400px; text-align: center; }
+        .evn-logo-full { width: 100%; max-width: 280px; height: auto; margin-bottom: 25px; display: block; margin-left: auto; margin-right: auto; }
+        .app-title { color: #004e9e; font-weight: 700; font-size: 1.4rem; text-transform: uppercase; margin-bottom: 5px; }
+        .app-subtitle { color: #6c757d; font-size: 0.95rem; margin-bottom: 30px; font-weight: 500; }
+        .form-label-custom { font-weight: 700; color: #444; font-size: 0.9rem; display: block; text-align: left; margin-bottom: 8px; }
+        .input-group-custom { border: 1px solid #ced4da; border-radius: 8px; overflow: hidden; background: #fff; margin-bottom: 20px; transition: 0.2s; }
+        .input-group-custom:focus-within { border-color: #004e9e; box-shadow: 0 0 0 0.2rem rgba(0, 78, 158, 0.1); }
+        .input-icon { border: none; color: #999; padding-left: 15px; display: flex; align-items: center; }
+        .form-control-custom { border: none; box-shadow: none; padding: 12px 10px; font-size: 0.95rem; }
+        .btn-login-custom { background-color: #004e9e; border: none; border-radius: 8px; color: white; font-weight: 700; text-transform: uppercase; padding: 12px; width: 100%; margin-top: 10px; }
+        .btn-login-custom:hover { background-color: #003a75; }
+        
+        /* MAIN APP STYLES */
+        .main-app { display: none; width: 100%; flex: 1; padding-top: 20px; padding-bottom: 40px; }
         .viewer-container { position: relative; height: 75vh; border: 1px solid #ddd; border-radius: 8px; overflow: hidden; background: #fff; }
         .doc-viewer { width: 100%; height: 100%; border: none; }
         .iframe-loading { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #f8f9fa; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 10; }
         .list-group-item.active { background-color: #e7f1ff; color: #000; border-color: #dee2e6; }
         .doc-read-indicator { font-size: 0.85em; font-weight: bold; color: #198754; }
-        @media (max-width: 768px) { .viewer-container { height: 60vh; } }
+        
+        /* FOOTER (Shared) */
+        .copyright { margin-top: auto; padding: 20px; text-align: center; color: #adb5bd; font-size: 0.8rem; width: 100%; background: #fff; border-top: 1px solid #eee; }
+        .main-app .copyright { background: #f0f2f5; border: none; }
 
+        /* Admin Specifics */
+        .progress-thin { height: 6px; border-radius: 3px; }
+        .stat-card { border-left: 4px solid #004e9e; }
     </style>
 </head>
 <body>
@@ -165,9 +47,8 @@
     <div id="loginScreen" class="login-wrapper">
         <div class="login-container">
             <div class="mb-2">
-                <img src="logo_doc_ct.png" alt="EVNHCMC Logo" class="evn-logo-full">
+                <img src="logo_doc_ct.png" alt="EVN Logo" class="evn-logo-full">
             </div>
-
             <h3 class="app-title">CỔNG PHỔ BIẾN VĂN BẢN</h3>
             <p class="app-subtitle">Hệ thống quản lý nội bộ - Đội QLLĐ 2</p>
 
@@ -177,28 +58,18 @@
                     <span class="input-icon"><i class="fas fa-envelope"></i></span>
                     <input type="email" id="emailInput" class="form-control form-control-custom" placeholder="Ví dụ: namqt@hcmpc.com.vn">
                 </div>
-
                 <label class="form-label-custom">Mật khẩu</label>
                 <div class="input-group-custom d-flex align-items-center">
                     <span class="input-icon"><i class="fas fa-lock"></i></span>
-                    <input type="password" id="passwordInput" class="form-control form-control-custom" placeholder="Nhập mật khẩu của bạn">
+                    <input type="password" id="passwordInput" class="form-control form-control-custom" placeholder="Nhập mật khẩu">
                     <button class="btn border-0 bg-transparent text-muted" type="button" onclick="togglePassword()">
                         <i class="fas fa-eye" id="eyeIcon"></i>
                     </button>
                 </div>
             </div>
-
-            <button onclick="handleLogin()" id="btnLogin" class="btn-login-custom">
-                ĐĂNG NHẬP <i class="fas fa-arrow-right"></i>
-            </button>
-
+            <button onclick="handleLogin()" id="btnLogin" class="btn-login-custom">ĐĂNG NHẬP <i class="fas fa-arrow-right"></i></button>
             <div id="loginError" class="text-danger mt-3 small fw-bold"></div>
-
-            <a href="#" class="forgot-password" onclick="alert('Vui lòng liên hệ Admin để cấp lại mật khẩu.')">Quên mật khẩu?</a>
-
-            <div class="copyright">
-                © 2026 TCD Software - Liên hệ 0963.292.882
-            </div>
+            <a href="#" class="text-muted small mt-3 d-inline-block text-decoration-none">Quên mật khẩu?</a>
         </div>
     </div>
 
@@ -217,49 +88,80 @@
             </nav>
 
             <div id="adminPanel" style="display:none;" class="mb-4">
-                <div class="card shadow-sm border-0">
-                    <div class="card-header bg-success text-white">
-                        <h5 class="mb-0"><i class="fab fa-google-drive me-2"></i>Upload văn bản mới</h5>
+                
+                <div class="card shadow-sm border-0 mb-3">
+                    <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center">
+                        <h6 class="mb-0 fw-bold text-primary"><i class="fas fa-tasks me-2"></i>Quản trị hệ thống</h6>
+                        <button class="btn btn-sm btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#uploadCollapse">
+                            <i class="fas fa-plus-circle me-1"></i> Tạo văn bản mới
+                        </button>
                     </div>
-                    <div class="card-body">
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <label class="form-label">Tên văn bản</label>
-                                <input type="text" id="docTitleInput" class="form-control" placeholder="Ví dụ: Quy định An toàn điện 2026">
-                            </div>
-                            <div class="col-md-3">
-                                <label class="form-label">Thời gian đọc (giây)</label>
-                                <input type="number" id="docTimeInput" class="form-control" value="15" min="5">
-                            </div>
-                            <div class="col-md-3">
-                                <label class="form-label">File PDF</label>
-                                <input type="file" id="fileInput" class="form-control" accept="application/pdf">
-                            </div>
-                            <div class="col-12 text-end">
-                                <button onclick="uploadDocument()" id="btnUpload" class="btn btn-success px-4">
-                                    <i class="fas fa-cloud-upload-alt"></i> Upload & Phát hành
-                                </button>
+                    <div class="collapse" id="uploadCollapse">
+                        <div class="card-body bg-light border-top">
+                            <div class="row g-3">
+                                <div class="col-md-5">
+                                    <label class="form-label small fw-bold">Tên văn bản</label>
+                                    <input type="text" id="docTitleInput" class="form-control" placeholder="Nhập tiêu đề...">
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label small fw-bold">File PDF</label>
+                                    <input type="file" id="fileInput" class="form-control" accept="application/pdf" onchange="handleFileSelect()">
+                                </div>
+                                <div class="col-md-2">
+                                    <label class="form-label small fw-bold">Số trang</label>
+                                    <input type="number" id="pageCountInput" class="form-control bg-white" readonly placeholder="...">
+                                </div>
+                                <div class="col-md-2">
+                                    <label class="form-label small fw-bold">Thời gian (Giây)</label>
+                                    <input type="number" id="docTimeInput" class="form-control" value="15">
+                                </div>
+                                <div class="col-12 text-end">
+                                    <div id="statusLog" class="d-inline-block text-danger small me-2 fw-bold"></div>
+                                    <button onclick="uploadDocument()" id="btnUpload" class="btn btn-success">
+                                        <i class="fas fa-cloud-upload-alt me-1"></i> Phát hành ngay
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                        <div id="statusLog" class="mt-2 text-primary fw-bold small"></div>
                     </div>
                 </div>
-                
-                <div class="card shadow-sm border-0 mt-4">
-                    <div class="card-header bg-white fw-bold">Theo dõi tiến độ đọc hiểu</div>
-                    <div class="card-body p-0">
-                        <div class="table-responsive" style="max-height: 400px;">
-                            <table class="table table-hover mb-0 align-middle">
-                                <thead class="table-light sticky-top">
-                                    <tr>
-                                        <th>Thời gian</th>
-                                        <th>Nhân viên</th>
-                                        <th>Văn bản</th>
-                                        <th>Trạng thái</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="adminReportBody"></tbody>
-                            </table>
+
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <div class="card shadow-sm border-0 h-100">
+                            <div class="card-header bg-white fw-bold">
+                                <i class="fas fa-users-cog me-2 text-warning"></i>Danh sách nhân sự
+                            </div>
+                            <div class="card-body">
+                                <p class="small text-muted">Paste danh sách email nhân viên (mỗi dòng 1 email) để tính % hoàn thành.</p>
+                                <textarea id="staffListInput" class="form-control mb-2 small" rows="5" placeholder="nhanvien1@hcmpc.com.vn&#10;nhanvien2@hcmpc.com.vn..."></textarea>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="small fw-bold text-primary" id="staffCountDisplay">0 nhân viên</span>
+                                    <button onclick="saveStaffList()" class="btn btn-sm btn-outline-primary">Lưu danh sách</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-8 mb-3">
+                        <div class="card shadow-sm border-0 h-100">
+                            <div class="card-header bg-white fw-bold d-flex justify-content-between align-items-center">
+                                <span><i class="fas fa-chart-line me-2 text-info"></i>Tiến độ đơn vị</span>
+                                <button onclick="exportReport()" class="btn btn-sm btn-outline-success"><i class="fas fa-file-excel me-1"></i> Xuất Excel</button>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle mb-0 text-center small">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th class="text-start">Văn bản</th>
+                                            <th>Ngày BH</th>
+                                            <th>Hoàn thành</th>
+                                            <th>Thao tác</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="adminReportBody"></tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -270,22 +172,18 @@
                     <div class="col-md-4 mb-3">
                         <div class="card shadow-sm border-0 h-100">
                             <div class="card-header bg-white fw-bold d-flex justify-content-between align-items-center">
-                                <span>Danh sách văn bản</span>
+                                <span>Văn bản cần đọc</span>
                                 <span class="badge bg-light text-dark border" id="readCountBadge">0/0</span>
                             </div>
-                            <div class="list-group list-group-flush" id="documentList" style="max-height: 75vh; overflow-y: auto;">
-                                <div class="text-center p-3 text-muted"><span class="spinner-border spinner-border-sm"></span> Đang tải...</div>
-                            </div>
+                            <div class="list-group list-group-flush" id="documentList" style="max-height: 75vh; overflow-y: auto;"></div>
                         </div>
                     </div>
-
                     <div class="col-md-8">
                         <div id="emptyState" class="text-center p-5 bg-white rounded shadow-sm h-100 d-flex flex-column justify-content-center align-items-center">
                             <i class="fas fa-book-reader fa-4x text-muted mb-3"></i>
                             <h5>Chưa chọn văn bản</h5>
                             <p class="text-muted">Vui lòng chọn văn bản bên trái để bắt đầu.</p>
                         </div>
-
                         <div id="readingView" style="display:none;">
                             <div class="card shadow-sm border-0">
                                 <div class="card-header bg-white d-flex justify-content-between align-items-center">
@@ -317,25 +215,46 @@
         </div>
     </div>
 
+    <div class="copyright">
+        © 2026 TCD Software - Liên hệ 0963.292.882
+    </div>
+
+    <div class="modal fade" id="detailModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="detailModalTitle">Chi tiết đọc hiểu</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <ul class="nav nav-tabs mb-3">
+                        <li class="nav-item"><a class="nav-link active text-success" data-bs-toggle="tab" href="#tabRead">Đã đọc (<span id="countRead">0</span>)</a></li>
+                        <li class="nav-item"><a class="nav-link text-danger" data-bs-toggle="tab" href="#tabUnread">Chưa đọc (<span id="countUnread">0</span>)</a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="tabRead">
+                            <ul class="list-group" id="listRead"></ul>
+                        </div>
+                        <div class="tab-pane fade" id="tabUnread">
+                            <ul class="list-group" id="listUnread"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
     <script>
-        // --- UI: TOGGLE PASSWORD ---
-        function togglePassword() {
-            const input = document.getElementById('passwordInput');
-            const icon = document.getElementById('eyeIcon');
-            if (input.type === "password") {
-                input.type = "text";
-                icon.className = "fas fa-eye-slash";
-            } else {
-                input.type = "password";
-                icon.className = "fas fa-eye";
-            }
-        }
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
 
-        // --- BACKEND LOGIC ---
+        // --- CONFIGURATION ---
         const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyqgLvaQbt1dIpQhYedIGURkPBuRZ-i-mJWe_qUBIN9mUOP7Oy0CQI9h3u6fzxfW-Xrkw/exec"; 
         
         const firebaseConfig = {
@@ -355,11 +274,9 @@
         // STATE
         let currentUser = null;
         let isAdmin = false;
-        let currentDoc = null;
-        let readTimer = null;
-        let timeLeft = 0;
-        let allDocsData = []; 
-        let userReadIds = new Set(); 
+        let staffList = []; // Danh sách nhân viên
+        let docsStats = {}; // Thống kê
+        let readsData = []; // Dữ liệu đọc
 
         // AUTH
         auth.onAuthStateChanged(user => {
@@ -374,6 +291,7 @@
                 
                 if (isAdmin) setupAdminView();
                 else setupUserView();
+                
                 listenForNewDocs();
             } else {
                 document.getElementById('loginScreen').style.display = 'flex';
@@ -381,49 +299,65 @@
             }
         });
 
-        async function handleLogin() {
-            const email = document.getElementById('emailInput').value;
-            const password = document.getElementById('passwordInput').value;
-            const errorDiv = document.getElementById('loginError');
-            const btn = document.getElementById('btnLogin');
+        // --- PDF PAGE COUNTING LOGIC ---
+        async function handleFileSelect() {
+            const fileInput = document.getElementById('fileInput');
+            const pageInput = document.getElementById('pageCountInput');
+            const timeInput = document.getElementById('docTimeInput');
+            const file = fileInput.files[0];
 
-            if (!email || !password) return errorDiv.innerText = "Vui lòng nhập đủ thông tin";
-            btn.disabled = true;
-            btn.innerHTML = 'ĐANG XỬ LÝ...';
-            errorDiv.innerText = "";
-
-            try {
-                await auth.signInWithEmailAndPassword(email, password);
-            } catch (error) {
-                if (error.code === 'auth/invalid-login-credentials' || error.message.includes('INVALID_LOGIN_CREDENTIALS') || error.code === 'auth/user-not-found') {
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = async function(e) {
+                    const typedarray = new Uint8Array(e.target.result);
                     try {
-                        await auth.createUserWithEmailAndPassword(email, password);
-                    } catch (createErr) {
-                        errorDiv.innerText = createErr.code === 'auth/email-already-in-use' ? "Sai mật khẩu!" : "Lỗi: " + createErr.message;
-                        btn.disabled = false;
-                        btn.innerHTML = 'ĐĂNG NHẬP <i class="fas fa-arrow-right"></i>';
+                        const pdf = await pdfjsLib.getDocument(typedarray).promise;
+                        const pages = pdf.numPages;
+                        pageInput.value = pages;
+                        // Tự động tính thời gian: 15s mỗi trang
+                        timeInput.value = pages * 15; 
+                    } catch (error) {
+                        console.error(error);
+                        pageInput.value = "";
+                        alert("Không đọc được số trang PDF. Vui lòng nhập thủ công.");
                     }
-                } else {
-                    errorDiv.innerText = "Lỗi: " + error.message;
-                    btn.disabled = false;
-                    btn.innerHTML = 'ĐĂNG NHẬP <i class="fas fa-arrow-right"></i>';
-                }
+                };
+                reader.readAsArrayBuffer(file);
             }
         }
 
-        function handleLogout() {
-            auth.signOut();
-            location.reload();
-        }
-
-        // --- ADMIN ---
+        // --- ADMIN: STAFF MANAGEMENT ---
         function setupAdminView() {
             document.getElementById('adminPanel').style.display = 'block';
             document.getElementById('userPanel').style.display = 'none'; 
             document.getElementById('adminBadge').style.display = 'inline-block';
-            loadAdminReport();
+            
+            // Load Staff List
+            db.collection('settings').doc('staff').get().then(doc => {
+                if (doc.exists && doc.data().list) {
+                    staffList = doc.data().list;
+                    document.getElementById('staffListInput').value = staffList.join('\n');
+                    document.getElementById('staffCountDisplay').innerText = `${staffList.length} nhân viên`;
+                }
+            });
+            
+            loadAdminStats();
         }
 
+        function saveStaffList() {
+            const raw = document.getElementById('staffListInput').value;
+            const list = raw.split('\n').map(e => e.trim()).filter(e => e.length > 5); // Basic validation
+            
+            db.collection('settings').doc('staff').set({ list: list })
+                .then(() => {
+                    staffList = list;
+                    document.getElementById('staffCountDisplay').innerText = `${list.length} nhân viên`;
+                    alert("Đã lưu danh sách nhân viên!");
+                    loadAdminStats(); // Refresh stats
+                });
+        }
+
+        // --- ADMIN: UPLOAD ---
         const getBase64 = (file) => new Promise((resolve, reject) => {
             const reader = new FileReader();
             reader.readAsDataURL(file);
@@ -438,182 +372,236 @@
             const btn = document.getElementById('btnUpload');
             const statusLog = document.getElementById('statusLog');
 
-            if (!title || !file) return alert("Vui lòng nhập tên và chọn file PDF!");
+            if (!title || !file) return alert("Thiếu thông tin!");
             btn.disabled = true;
-            statusLog.innerText = "Đang xử lý file...";
+            statusLog.innerText = "Đang xử lý...";
 
             try {
                 const base64Data = await getBase64(file);
-                statusLog.innerText = "Đang gửi sang Drive... (Vui lòng đợi)";
+                statusLog.innerText = "Đang Upload Drive...";
                 const response = await fetch(GAS_WEB_APP_URL, {
-                    method: 'POST',
-                    redirect: 'follow',
+                    method: 'POST', redirect: 'follow',
                     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                     body: JSON.stringify({ filename: file.name, mimeType: file.type, data: base64Data })
                 });
-                if (!response.ok) throw new Error("Lỗi kết nối: " + response.status);
+                if (!response.ok) throw new Error("Lỗi mạng");
                 const result = await response.json();
                 if(result.status !== 'success') throw new Error(result.message);
 
-                statusLog.innerText = "Upload xong. Đang lưu DB...";
+                statusLog.innerText = "Đang lưu DB...";
                 await db.collection('documents').add({
                     title: title, url: result.url, originalUrl: result.originalUrl, minTime: minTime,
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp(), createdBy: currentUser.email, storageType: 'google_drive'
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(), createdBy: currentUser.email
                 });
 
                 statusLog.innerText = "Thành công!";
-                alert("Đã phát hành văn bản!");
+                alert("Đã phát hành!");
+                // Clear form
                 document.getElementById('docTitleInput').value = '';
                 document.getElementById('fileInput').value = '';
+                document.getElementById('pageCountInput').value = '';
                 btn.disabled = false;
                 statusLog.innerText = "";
             } catch (error) {
-                console.error(error);
                 statusLog.innerText = "Lỗi: " + error.message;
-                alert("Lỗi: " + error.message);
                 btn.disabled = false;
             }
         }
 
-        function loadAdminReport() {
-            db.collection('reads').orderBy('timestamp', 'desc').limit(50).onSnapshot(snapshot => {
-                const tbody = document.getElementById('adminReportBody');
-                tbody.innerHTML = '';
+        // --- ADMIN: STATS & REPORT ---
+        function loadAdminStats() {
+            // 1. Get all reads
+            db.collection('reads').onSnapshot(snapshot => {
+                readsData = [];
+                snapshot.forEach(doc => readsData.push(doc.data()));
+                renderAdminTable();
+            });
+            
+            // 2. Get documents
+            db.collection('documents').orderBy('createdAt', 'desc').onSnapshot(snapshot => {
+                docsStats = {};
                 snapshot.forEach(doc => {
-                    const data = doc.data();
-                    const time = data.timestamp ? data.timestamp.toDate().toLocaleString('vi-VN') : '';
-                    tbody.innerHTML += `<tr><td>${time}</td><td><strong>${data.userEmail}</strong></td><td>${data.docTitle}</td><td><span class="badge bg-success">Đã ký</span></td></tr>`;
+                    docsStats[doc.id] = { ...doc.data(), id: doc.id };
                 });
+                renderAdminTable();
             });
         }
 
-        // --- USER ---
+        function renderAdminTable() {
+            const tbody = document.getElementById('adminReportBody');
+            tbody.innerHTML = '';
+            const totalStaff = staffList.length || 1; // Avoid divide by zero
+
+            Object.values(docsStats).forEach(doc => {
+                // Count distinct readers for this doc
+                const readers = new Set(readsData.filter(r => r.docId === doc.id).map(r => r.userEmail));
+                const count = readers.size;
+                const percent = Math.round((count / totalStaff) * 100);
+                const date = doc.createdAt ? doc.createdAt.toDate().toLocaleDateString('vi-VN') : '';
+
+                tbody.innerHTML += `
+                    <tr>
+                        <td class="text-start text-truncate" style="max-width: 200px;" title="${doc.title}">${doc.title}</td>
+                        <td>${date}</td>
+                        <td>
+                            <div class="progress progress-thin mb-1">
+                                <div class="progress-bar bg-success" style="width: ${percent}%"></div>
+                            </div>
+                            <span class="small fw-bold text-muted">${count}/${totalStaff} (${percent}%)</span>
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary" onclick="showDetail('${doc.id}')">
+                                <i class="fas fa-info-circle"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        function showDetail(docId) {
+            const doc = docsStats[docId];
+            const readers = new Set(readsData.filter(r => r.docId === docId).map(r => r.userEmail));
+            
+            const readList = Array.from(readers);
+            const unreadList = staffList.filter(email => !readers.has(email));
+
+            document.getElementById('detailModalTitle').innerText = doc.title;
+            document.getElementById('countRead').innerText = readList.length;
+            document.getElementById('countUnread').innerText = unreadList.length;
+
+            const ulRead = document.getElementById('listRead');
+            ulRead.innerHTML = readList.length ? readList.map(e => `<li class="list-group-item"><i class="fas fa-check text-success me-2"></i>${e}</li>`).join('') : '<li class="list-group-item text-muted">Chưa có ai</li>';
+
+            const ulUnread = document.getElementById('listUnread');
+            ulUnread.innerHTML = unreadList.length ? unreadList.map(e => `<li class="list-group-item"><i class="fas fa-times text-danger me-2"></i>${e}</li>`).join('') : '<li class="list-group-item text-muted">Đã đọc hết</li>';
+
+            new bootstrap.Modal(document.getElementById('detailModal')).show();
+        }
+
+        function exportReport() {
+            // Flatten data for Excel
+            const data = [];
+            Object.values(docsStats).forEach(doc => {
+                const readers = new Set(readsData.filter(r => r.docId === doc.id).map(r => r.userEmail));
+                staffList.forEach(email => {
+                    data.push({
+                        "Văn bản": doc.title,
+                        "Ngày ban hành": doc.createdAt ? doc.createdAt.toDate().toLocaleDateString('vi-VN') : '',
+                        "Nhân viên": email,
+                        "Trạng thái": readers.has(email) ? "Đã đọc" : "Chưa đọc"
+                    });
+                });
+            });
+
+            const ws = XLSX.utils.json_to_sheet(data);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Báo cáo đọc hiểu");
+            XLSX.writeFile(wb, "Bao_cao_van_ban_so.xlsx");
+        }
+
+        // --- USER & GENERAL LOGIC (Keep existing) ---
         function setupUserView() {
             document.getElementById('adminPanel').style.display = 'none';
             document.getElementById('userPanel').style.display = 'block';
             db.collection('documents').orderBy('createdAt', 'desc').onSnapshot(snapshot => {
                 allDocsData = [];
                 snapshot.forEach(doc => allDocsData.push({ id: doc.id, ...doc.data() }));
-                renderDocumentList();
+                renderUserDocList();
             });
             db.collection('reads').where('userId', '==', currentUser.uid).onSnapshot(snapshot => {
                 userReadIds = new Set();
                 snapshot.forEach(doc => userReadIds.add(doc.data().docId));
-                renderDocumentList(); 
+                renderUserDocList(); 
             });
         }
 
-        function renderDocumentList() {
+        // ... (User rendering & Auth functions similar to V1.15) ...
+        async function handleLogin() {
+            const email = document.getElementById('emailInput').value;
+            const password = document.getElementById('passwordInput').value;
+            const errorDiv = document.getElementById('loginError');
+            if (!email || !password) return errorDiv.innerText = "Vui lòng nhập đủ thông tin";
+            try {
+                await auth.signInWithEmailAndPassword(email, password);
+            } catch (error) {
+                if (error.code.includes('user-not-found') || error.code.includes('invalid')) {
+                    try { await auth.createUserWithEmailAndPassword(email, password); } 
+                    catch (err) { errorDiv.innerText = "Lỗi đăng nhập/tạo mới: " + err.message; }
+                } else errorDiv.innerText = "Lỗi: " + error.message;
+            }
+        }
+        function togglePassword() {
+            const input = document.getElementById('passwordInput');
+            const icon = document.getElementById('eyeIcon');
+            if (input.type === "password") { input.type = "text"; icon.className = "fas fa-eye-slash"; } 
+            else { input.type = "password"; icon.className = "fas fa-eye"; }
+        }
+        function handleLogout() { auth.signOut(); location.reload(); }
+        
+        let allDocsData = [], userReadIds = new Set(), currentDoc = null, readTimer = null, timeLeft = 0;
+        
+        function renderUserDocList() {
             const listEl = document.getElementById('documentList');
             const badgeEl = document.getElementById('readCountBadge');
-            const scrollTop = listEl.scrollTop;
+            let readCount = 0;
             listEl.innerHTML = '';
             
-            if (allDocsData.length === 0) {
-                listEl.innerHTML = '<div class="text-center p-3">Chưa có văn bản.</div>';
-                return;
-            }
-            let readCount = 0;
             allDocsData.forEach(doc => {
                 const isRead = userReadIds.has(doc.id);
                 if (isRead) readCount++;
                 const activeClass = (currentDoc && currentDoc.id === doc.id) ? 'active' : '';
+                const statusHtml = isRead ? `<span class="doc-read-indicator"><i class="fas fa-check-circle"></i> Đã đọc</span>` : `<span class="text-danger small fw-bold">Chưa đọc</span>`;
+                
                 const el = document.createElement('button');
                 el.className = `list-group-item list-group-item-action py-3 ${activeClass}`;
-                let statusHtml = isRead ? `<span class="doc-read-indicator"><i class="fas fa-check-circle"></i> Đã đọc</span>` : `<span class="text-danger small"><i class="fas fa-exclamation-circle"></i> Chưa đọc</span>`;
-                el.innerHTML = `<div class="d-flex w-100 justify-content-between align-items-center mb-1"><h6 class="mb-0 fw-bold text-truncate" style="max-width: 70%;">${doc.title}</h6></div><div class="d-flex justify-content-between align-items-center"><small class="${isRead ? '' : 'text-muted'}"><i class="far fa-clock"></i> ${doc.minTime}s</small>${statusHtml}</div>`;
+                el.innerHTML = `<div class="d-flex w-100 justify-content-between mb-1"><h6 class="mb-0 fw-bold text-truncate" style="max-width: 70%;">${doc.title}</h6></div><div class="d-flex justify-content-between"><small class="text-muted">${doc.minTime}s</small>${statusHtml}</div>`;
                 el.onclick = () => openDocument(doc);
                 listEl.appendChild(el);
             });
-            badgeEl.innerText = `${readCount}/${allDocsData.length} Đã đọc`;
-            listEl.scrollTop = scrollTop;
+            badgeEl.innerText = `${readCount}/${allDocsData.length}`;
         }
 
         function openDocument(data) {
             document.getElementById('emptyState').style.setProperty('display', 'none', 'important');
             document.getElementById('readingView').style.display = 'block';
-            currentDoc = data;
-            renderDocumentList(); 
+            currentDoc = data; renderUserDocList();
             document.getElementById('viewTitle').innerText = data.title;
+            
             const iframe = document.getElementById('pdfViewer');
-            const loader = document.getElementById('iframeLoader');
-            loader.style.display = 'flex'; 
-            iframe.style.opacity = '0'; 
-            iframe.src = data.url; 
-            setTimeout(() => { loader.style.display = 'none'; iframe.style.opacity = '1'; }, 5000);
+            document.getElementById('iframeLoader').style.display = 'flex';
+            iframe.style.opacity = '0';
+            iframe.src = data.url;
+            setTimeout(() => { document.getElementById('iframeLoader').style.display = 'none'; iframe.style.opacity = '1'; }, 4000);
 
             clearInterval(readTimer);
             timeLeft = data.minTime;
             const btn = document.getElementById('btnConfirmRead');
             const timerText = document.getElementById('timerText');
-            const timerContainer = document.getElementById('timerContainer');
-            const statusBadge = document.getElementById('viewStatus');
             const isRead = userReadIds.has(data.id);
 
             if (isRead) {
-                statusBadge.className = 'badge bg-success';
-                statusBadge.innerText = 'Đã hoàn thành';
-                btn.className = 'btn btn-success disabled';
-                btn.innerHTML = '<i class="fas fa-check"></i> Đã ký xác nhận';
-                btn.disabled = true;
-                timerText.innerText = "Hoàn tất";
-                timerContainer.className = "d-flex align-items-center text-success fw-bold";
+                btn.className = 'btn btn-success disabled'; btn.innerHTML = '<i class="fas fa-check"></i> Đã hoàn thành'; btn.disabled = true; timerText.innerText = "Hoàn tất";
             } else {
-                statusBadge.className = 'badge bg-warning text-dark';
-                statusBadge.innerText = 'Chưa đọc';
-                btn.className = 'btn btn-secondary';
-                btn.innerHTML = `Đang đọc...`;
-                btn.disabled = true;
-                timerContainer.className = "d-flex align-items-center text-danger fw-bold";
+                btn.className = 'btn btn-secondary'; btn.innerHTML = 'Đang đọc...'; btn.disabled = true;
                 timerText.innerText = timeLeft + "s";
                 readTimer = setInterval(() => {
-                    timeLeft--;
-                    timerText.innerText = timeLeft + "s";
-                    if (timeLeft <= 0) {
-                        clearInterval(readTimer);
-                        btn.disabled = false;
-                        btn.className = 'btn btn-primary';
-                        btn.innerHTML = 'Xác nhận đã đọc hiểu';
-                        timerContainer.className = "text-success fw-bold";
-                        timerText.innerText = "Đủ thời gian";
-                    }
+                    timeLeft--; timerText.innerText = timeLeft + "s";
+                    if (timeLeft <= 0) { clearInterval(readTimer); btn.disabled = false; btn.className = 'btn btn-primary'; btn.innerHTML = 'Xác nhận đã đọc hiểu'; }
                 }, 1000);
             }
         }
-
-        function onIframeLoad() {
-            setTimeout(() => {
-                document.getElementById('iframeLoader').style.display = 'none';
-                document.getElementById('pdfViewer').style.opacity = '1';
-            }, 500);
-        }
-
+        function onIframeLoad() { setTimeout(() => { document.getElementById('iframeLoader').style.display = 'none'; document.getElementById('pdfViewer').style.opacity = '1'; }, 500); }
         async function confirmRead() {
             if (!currentUser || !currentDoc) return;
-            const btn = document.getElementById('btnConfirmRead');
-            btn.disabled = true;
-            try {
-                await db.collection('reads').add({
-                    userId: currentUser.uid, userEmail: currentUser.email,
-                    docId: currentDoc.id, docTitle: currentDoc.title,
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                });
-            } catch (error) {
-                alert("Lỗi: " + error.message);
-                btn.disabled = false;
-            }
+            document.getElementById('btnConfirmRead').disabled = true;
+            await db.collection('reads').add({ userId: currentUser.uid, userEmail: currentUser.email, docId: currentDoc.id, docTitle: currentDoc.title, timestamp: firebase.firestore.FieldValue.serverTimestamp() });
         }
-
         function listenForNewDocs() {
             let isFirst = true;
             db.collection('documents').orderBy('createdAt', 'desc').limit(1).onSnapshot(snapshot => {
                 if (isFirst) { isFirst = false; return; }
-                if (!snapshot.empty) {
-                    const data = snapshot.docs[0].data();
-                    if (data.createdBy !== currentUser.email) {
-                        if (Notification.permission === "granted") new Notification("Văn bản mới!", { body: data.title });
-                    }
-                }
+                if (!snapshot.empty && snapshot.docs[0].data().createdBy !== currentUser.email && Notification.permission === "granted") new Notification("Văn bản mới!", { body: snapshot.docs[0].data().title });
             });
         }
     </script>
