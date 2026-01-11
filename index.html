@@ -3,27 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cổng Văn Bản Nội Bộ - xacnhandocvanban</title>
+    <title>Cổng Văn Bản Nội Bộ - xacnhandocvanban V1.5</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         body { background-color: #f0f2f5; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        
-        /* Login Styles */
         .login-wrapper { height: 100vh; display: flex; align-items: center; justify-content: center; }
         .login-card { width: 100%; max-width: 400px; padding: 2rem; border-radius: 15px; background: white; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
-        
-        /* App Styles */
         .main-app { display: none; padding-top: 20px; padding-bottom: 60px; }
         .doc-viewer { height: 70vh; width: 100%; border: 1px solid #ddd; border-radius: 8px; background: #525659; }
-        
-        /* Admin Upload Styles */
         .upload-zone { border: 2px dashed #ced4da; border-radius: 10px; padding: 30px; text-align: center; cursor: pointer; transition: 0.3s; background: #fff; }
-        
-        /* Mobile responsive */
-        @media (max-width: 768px) {
-            .doc-viewer { height: 60vh; }
-        }
+        @media (max-width: 768px) { .doc-viewer { height: 60vh; } }
     </style>
 </head>
 <body>
@@ -31,16 +21,16 @@
     <div id="loginScreen" class="login-wrapper">
         <div class="login-card">
             <div class="text-center mb-4">
-                <i class="fas fa-file-signature fa-3x text-primary mb-2"></i>
+                <i class="fas fa-shield-alt fa-3x text-primary mb-2"></i>
                 <h4 class="fw-bold text-dark">Cổng Văn Bản Số</h4>
-                <p class="text-muted small">Project: xacnhandocvanban</p>
+                <p class="text-muted small">Hệ thống V1.5 (Fix Login)</p>
             </div>
             
             <div class="mb-3">
-                <label class="form-label">Email công vụ</label>
+                <label class="form-label">Email quản trị (Admin)</label>
                 <div class="input-group">
                     <span class="input-group-text"><i class="fas fa-envelope"></i></span>
-                    <input type="email" id="emailInput" class="form-control" placeholder="deprc.qldd2025@gmail.com">
+                    <input type="email" id="emailInput" class="form-control" placeholder="deptc@hcmpc.com.vn">
                 </div>
             </div>
             <div class="mb-3">
@@ -59,7 +49,7 @@
         <nav class="navbar navbar-light bg-white rounded shadow-sm mb-4 px-3">
             <div class="d-flex align-items-center">
                 <i class="fas fa-book-reader text-primary me-2 fa-lg"></i>
-                <span class="fw-bold text-dark" id="appHeaderTitle">Trang chủ</span>
+                <span class="fw-bold text-dark">Trang chủ</span>
                 <span class="badge bg-danger ms-2" id="adminBadge" style="display:none">QUẢN TRỊ VIÊN</span>
             </div>
             <div class="d-flex align-items-center">
@@ -71,7 +61,7 @@
         <div id="adminPanel" style="display:none;" class="mb-4">
             <div class="card shadow-sm border-0">
                 <div class="card-header bg-primary text-white">
-                    <h5 class="mb-0"><i class="fas fa-cloud-upload-alt me-2"></i>Đăng tải Văn bản & Quy định mới</h5>
+                    <h5 class="mb-0"><i class="fas fa-cloud-upload-alt me-2"></i>Đăng tải Văn bản</h5>
                 </div>
                 <div class="card-body">
                     <div class="row g-3">
@@ -80,7 +70,7 @@
                             <input type="text" id="docTitleInput" class="form-control" placeholder="Ví dụ: Quy định An toàn điện 2026">
                         </div>
                         <div class="col-md-3">
-                            <label class="form-label">Thời gian đọc tối thiểu (giây)</label>
+                            <label class="form-label">Thời gian đọc (giây)</label>
                             <input type="number" id="docTimeInput" class="form-control" value="15" min="5">
                         </div>
                         <div class="col-md-3">
@@ -100,10 +90,7 @@
             </div>
             
             <div class="card shadow-sm border-0 mt-4">
-                <div class="card-header bg-white fw-bold d-flex justify-content-between">
-                    <span><i class="fas fa-chart-line me-2"></i>Theo dõi tiến độ đọc hiểu</span>
-                    <span class="badge bg-info text-dark">Real-time</span>
-                </div>
+                <div class="card-header bg-white fw-bold">Theo dõi tiến độ đọc hiểu</div>
                 <div class="card-body p-0">
                     <div class="table-responsive" style="max-height: 400px;">
                         <table class="table table-hover mb-0 align-middle">
@@ -128,18 +115,16 @@
                     <div class="card shadow-sm border-0 h-100">
                         <div class="card-header bg-white fw-bold">Danh sách văn bản</div>
                         <div class="list-group list-group-flush" id="documentList" style="max-height: 70vh; overflow-y: auto;">
-                            <div class="text-center p-3 text-muted"><span class="spinner-border spinner-border-sm"></span> Đang tải dữ liệu...</div>
+                            <div class="text-center p-3 text-muted"><span class="spinner-border spinner-border-sm"></span> Đang tải...</div>
                         </div>
                     </div>
                 </div>
-                
                 <div class="col-md-8">
                     <div id="emptyState" class="text-center p-5 bg-white rounded shadow-sm h-100 d-flex flex-column justify-content-center align-items-center">
                         <i class="fas fa-book-open fa-4x text-muted mb-3"></i>
                         <h5>Chưa chọn văn bản</h5>
-                        <p class="text-muted">Vui lòng chọn một văn bản từ danh sách bên trái để bắt đầu đọc và ký xác nhận.</p>
+                        <p class="text-muted">Chọn văn bản để bắt đầu đọc.</p>
                     </div>
-
                     <div id="readingView" style="display:none;">
                         <div class="card shadow-sm border-0">
                             <div class="card-header bg-white d-flex justify-content-between align-items-center">
@@ -148,7 +133,6 @@
                             </div>
                             <div class="card-body p-0">
                                 <iframe id="pdfViewer" class="doc-viewer" src=""></iframe>
-                                
                                 <div class="p-3 bg-light border-top d-flex justify-content-between align-items-center flex-wrap gap-2">
                                     <div class="d-flex align-items-center fw-bold" id="timerContainer">
                                         <i class="fas fa-hourglass-half me-2"></i> <span id="timerText">00:00</span>
@@ -171,7 +155,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
 
     <script>
-        // --- 1. CONFIGURATION (Dữ liệu chính chủ) ---
+        // CONFIG PROJECT xacnhandocvanban
         const firebaseConfig = {
             apiKey: "AIzaSyDC2PzQxU5K3PaoPIMTW7niXeMEHDOLM8I",
             authDomain: "xacnhandocvanban.firebaseapp.com",
@@ -182,89 +166,76 @@
             measurementId: "G-G87Z9DV9R7"
         };
         
-        // Initialize Firebase
         if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
         const storage = firebase.storage();
 
-        // --- GLOBAL STATE ---
+        // STATE
         let currentUser = null;
         let isAdmin = false;
         let currentDoc = null;
         let readTimer = null;
         let timeLeft = 0;
 
-        // --- 2. AUTHENTICATION & LOGIC ---
+        // AUTH STATE
         auth.onAuthStateChanged(user => {
             if (user) {
                 currentUser = user;
                 const email = user.email.toLowerCase();
-                
-                // LOGIC CẤP QUYỀN ADMIN:
-                // Tự động nhận diện Admin nếu email chứa 'deprc' (như deprc.qldd2025...) hoặc 'deptc'
+                // Admin logic: deptc OR deprc OR admin
                 if (email.includes('deprc') || email.includes('deptc') || email.includes('admin')) {
                     isAdmin = true;
-                } else {
-                    isAdmin = false;
                 }
                 
-                // UI Switch
                 document.getElementById('loginScreen').style.display = 'none';
                 document.getElementById('mainApp').style.display = 'block';
                 document.getElementById('userEmailDisplay').innerText = user.email;
 
-                // Setup View based on Role
-                if (isAdmin) {
-                    setupAdminView();
-                } else {
-                    setupUserView();
-                }
+                if (isAdmin) setupAdminView();
+                else setupUserView();
 
-                // Notification Permission
                 if (Notification.permission !== "granted") Notification.requestPermission();
-                
-                // Listen for new docs (Push Notification)
                 listenForNewDocs();
-
             } else {
                 document.getElementById('loginScreen').style.display = 'flex';
                 document.getElementById('mainApp').style.display = 'none';
             }
         });
 
+        // --- NEW LOGIN LOGIC (Version 1.5) ---
         async function handleLogin() {
             const email = document.getElementById('emailInput').value;
             const password = document.getElementById('passwordInput').value;
             const errorDiv = document.getElementById('loginError');
             const btn = document.getElementById('btnLogin');
 
-            if (!email || !password) {
-                errorDiv.innerText = "Vui lòng nhập đầy đủ thông tin";
-                return;
-            }
+            if (!email || !password) return errorDiv.innerText = "Vui lòng nhập đủ thông tin";
 
             btn.disabled = true;
             btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Đang xử lý...';
             errorDiv.innerText = "";
 
             try {
+                // 1. Thử đăng nhập
                 await auth.signInWithEmailAndPassword(email, password);
             } catch (error) {
-                if (error.code === 'auth/user-not-found') {
-                    // Tự động tạo tài khoản nếu chưa có (Tiện lợi cho lần đầu dùng project mới)
+                // Nếu lỗi là sai thông tin hoặc user không tồn tại (Firebase trả chung 1 lỗi này)
+                if (error.code === 'auth/invalid-login-credentials' || error.message.includes('INVALID_LOGIN_CREDENTIALS') || error.code === 'auth/user-not-found') {
+                    // 2. Thử tạo tài khoản mới (Giả định là người dùng mới)
                     try {
                         await auth.createUserWithEmailAndPassword(email, password);
-                        // Đăng nhập thành công sau khi tạo
+                        // Tạo thành công -> Tự động đăng nhập luôn
                     } catch (createErr) {
-                        errorDiv.innerText = "Lỗi tạo tài khoản: " + createErr.message;
+                        // Nếu tạo thất bại vì email đã tồn tại -> Nghĩa là user cũ nhưng nhập sai mật khẩu
+                        if (createErr.code === 'auth/email-already-in-use') {
+                            errorDiv.innerText = "Sai mật khẩu! Vui lòng kiểm tra lại.";
+                        } else {
+                            errorDiv.innerText = "Lỗi: " + createErr.message;
+                        }
                         btn.disabled = false;
                         btn.innerText = "ĐĂNG NHẬP / TẠO MỚI";
                     }
-                } else if (error.code === 'auth/wrong-password') {
-                    errorDiv.innerText = "Sai mật khẩu!";
-                    btn.disabled = false;
-                    btn.innerText = "ĐĂNG NHẬP / TẠO MỚI";
                 } else {
                     errorDiv.innerText = "Lỗi: " + error.message;
                     btn.disabled = false;
@@ -278,7 +249,7 @@
             location.reload();
         }
 
-        // --- 3. ADMIN FUNCTIONS ---
+        // --- ADMIN ---
         function setupAdminView() {
             document.getElementById('adminPanel').style.display = 'block';
             document.getElementById('userPanel').style.display = 'none'; 
@@ -294,14 +265,13 @@
             const progress = document.getElementById('uploadProgress');
             const progressBar = progress.querySelector('.progress-bar');
 
-            if (!title || !file) return alert("Vui lòng nhập tên văn bản và chọn file PDF.");
+            if (!title || !file) return alert("Thiếu thông tin!");
 
             btn.disabled = true;
             progress.style.display = 'flex';
             progressBar.style.width = '10%';
 
             try {
-                // 1. Upload File to Storage
                 const storageRef = storage.ref(`documents/${Date.now()}_${file.name}`);
                 const uploadTask = storageRef.put(file);
 
@@ -312,33 +282,21 @@
                     }, 
                     (error) => { throw error; }, 
                     async () => {
-                        // Upload Complete
                         const url = await uploadTask.snapshot.ref.getDownloadURL();
-                        
-                        // 2. Save Metadata to Firestore
                         await db.collection('documents').add({
-                            title: title,
-                            url: url,
-                            minTime: minTime,
+                            title: title, url: url, minTime: minTime,
                             createdAt: firebase.firestore.FieldValue.serverTimestamp(),
                             createdBy: currentUser.email
                         });
-
-                        alert("Đăng tải thành công! Hệ thống đang gửi thông báo đến toàn bộ nhân viên.");
-                        
-                        // Reset Form
+                        alert("Thành công!");
                         document.getElementById('docTitleInput').value = '';
                         document.getElementById('fileInput').value = '';
                         btn.disabled = false;
                         progress.style.display = 'none';
                     }
                 );
-
             } catch (error) {
-                console.error(error);
-                let msg = error.message;
-                if(error.code === 'storage/unauthorized') msg = "Lỗi quyền truy cập! Hãy bật Storage Rules trong Firebase Console.";
-                alert("Lỗi: " + msg);
+                alert("Lỗi upload: " + error.message);
                 btn.disabled = false;
                 progress.style.display = 'none';
             }
@@ -348,26 +306,15 @@
             db.collection('reads').orderBy('timestamp', 'desc').limit(50).onSnapshot(snapshot => {
                 const tbody = document.getElementById('adminReportBody');
                 tbody.innerHTML = '';
-                if(snapshot.empty) {
-                    tbody.innerHTML = '<tr><td colspan="4" class="text-center text-muted py-3">Chưa có dữ liệu đọc hiểu.</td></tr>';
-                    return;
-                }
                 snapshot.forEach(doc => {
                     const data = doc.data();
-                    const time = data.timestamp ? data.timestamp.toDate().toLocaleString('vi-VN') : 'Vừa xong';
-                    tbody.innerHTML += `
-                        <tr>
-                            <td>${time}</td>
-                            <td><strong>${data.userEmail}</strong></td>
-                            <td>${data.docTitle}</td>
-                            <td><span class="badge bg-success rounded-pill"><i class="fas fa-check"></i> Đã ký</span></td>
-                        </tr>
-                    `;
+                    const time = data.timestamp ? data.timestamp.toDate().toLocaleString('vi-VN') : '';
+                    tbody.innerHTML += `<tr><td>${time}</td><td><strong>${data.userEmail}</strong></td><td>${data.docTitle}</td><td><span class="badge bg-success">Đã ký</span></td></tr>`;
                 });
             });
         }
 
-        // --- 4. USER FUNCTIONS ---
+        // --- USER ---
         function setupUserView() {
             document.getElementById('adminPanel').style.display = 'none';
             document.getElementById('userPanel').style.display = 'block';
@@ -378,22 +325,12 @@
             db.collection('documents').orderBy('createdAt', 'desc').onSnapshot(snapshot => {
                 const listEl = document.getElementById('documentList');
                 listEl.innerHTML = '';
-                
-                if (snapshot.empty) {
-                    listEl.innerHTML = '<div class="text-center p-4 text-muted"><i class="fas fa-inbox fa-2x mb-2"></i><br>Hiện chưa có văn bản nào cần đọc.</div>';
-                    return;
-                }
-
+                if (snapshot.empty) return listEl.innerHTML = '<div class="text-center p-3">Chưa có văn bản.</div>';
                 snapshot.forEach(doc => {
                     const data = doc.data();
                     const el = document.createElement('button');
                     el.className = 'list-group-item list-group-item-action py-3';
-                    el.innerHTML = `
-                        <div class="d-flex w-100 justify-content-between align-items-center mb-1">
-                            <h6 class="mb-0 text-primary fw-bold text-truncate" style="max-width: 80%;">${data.title}</h6>
-                        </div>
-                        <small class="text-muted"><i class="far fa-clock"></i> Yêu cầu đọc: ${data.minTime} giây</small>
-                    `;
+                    el.innerHTML = `<h6 class="mb-1 text-primary fw-bold text-truncate">${data.title}</h6><small class="text-muted">${data.minTime}s yêu cầu</small>`;
                     el.onclick = () => openDocument(doc.id, data);
                     listEl.appendChild(el);
                 });
@@ -402,14 +339,11 @@
 
         async function openDocument(docId, data) {
             currentDoc = { id: docId, ...data };
-            
-            // UI Setup
             document.getElementById('emptyState').style.display = 'none';
             document.getElementById('readingView').style.display = 'block';
             document.getElementById('viewTitle').innerText = data.title;
             document.getElementById('pdfViewer').src = data.url; 
             
-            // Reset Timer & Status
             clearInterval(readTimer);
             timeLeft = data.minTime;
             const btn = document.getElementById('btnConfirmRead');
@@ -417,110 +351,73 @@
             const timerContainer = document.getElementById('timerContainer');
             const statusBadge = document.getElementById('viewStatus');
             
-            // Check if User already read this doc
-            const readCheck = await db.collection('reads')
-                .where('docId', '==', docId)
-                .where('userId', '==', currentUser.uid)
-                .get();
+            const readCheck = await db.collection('reads').where('docId', '==', docId).where('userId', '==', currentUser.uid).get();
 
             if (!readCheck.empty) {
-                // Already Read
                 statusBadge.className = 'badge bg-success';
                 statusBadge.innerText = 'Đã hoàn thành';
                 btn.className = 'btn btn-success disabled';
-                btn.innerHTML = '<i class="fas fa-check-double"></i> Đã ký xác nhận';
+                btn.innerHTML = '<i class="fas fa-check"></i> Đã ký xác nhận';
                 btn.disabled = true;
                 timerText.innerText = "Hoàn tất";
                 timerContainer.className = "d-flex align-items-center text-success fw-bold";
             } else {
-                // Not Read Yet
                 statusBadge.className = 'badge bg-warning text-dark';
                 statusBadge.innerText = 'Chưa đọc';
                 btn.className = 'btn btn-secondary';
-                btn.innerHTML = `<span class="spinner-grow spinner-grow-sm" role="status"></span> Đang đọc...`;
+                btn.innerHTML = `Đang đọc...`;
                 btn.disabled = true;
                 timerContainer.className = "d-flex align-items-center text-danger fw-bold";
                 
-                startReadingTimer();
-            }
-        }
-
-        function startReadingTimer() {
-            const btn = document.getElementById('btnConfirmRead');
-            const timerText = document.getElementById('timerText');
-            const timerContainer = document.getElementById('timerContainer');
-            
-            timerText.innerText = timeLeft + "s";
-            
-            readTimer = setInterval(() => {
-                timeLeft--;
                 timerText.innerText = timeLeft + "s";
-                
-                if (timeLeft <= 0) {
-                    clearInterval(readTimer);
-                    // Enable Button
-                    btn.disabled = false;
-                    btn.className = 'btn btn-primary';
-                    btn.innerHTML = '<i class="fas fa-file-signature"></i> Xác nhận đã đọc hiểu';
-                    
-                    timerText.innerText = "Đủ thời gian";
-                    timerContainer.className = "d-flex align-items-center text-success fw-bold";
-                }
-            }, 1000);
+                readTimer = setInterval(() => {
+                    timeLeft--;
+                    timerText.innerText = timeLeft + "s";
+                    if (timeLeft <= 0) {
+                        clearInterval(readTimer);
+                        btn.disabled = false;
+                        btn.className = 'btn btn-primary';
+                        btn.innerHTML = 'Xác nhận đã đọc hiểu';
+                        timerContainer.className = "text-success fw-bold";
+                        timerText.innerText = "Đủ thời gian";
+                    }
+                }, 1000);
+            }
         }
 
         async function confirmRead() {
             if (!currentUser || !currentDoc) return;
             const btn = document.getElementById('btnConfirmRead');
             btn.disabled = true;
-            btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Đang ký...';
-
             try {
                 await db.collection('reads').add({
-                    userId: currentUser.uid,
-                    userEmail: currentUser.email,
-                    docId: currentDoc.id,
-                    docTitle: currentDoc.title,
+                    userId: currentUser.uid, userEmail: currentUser.email,
+                    docId: currentDoc.id, docTitle: currentDoc.title,
                     timestamp: firebase.firestore.FieldValue.serverTimestamp()
                 });
-
                 document.getElementById('viewStatus').className = 'badge bg-success';
                 document.getElementById('viewStatus').innerText = 'Đã hoàn thành';
                 btn.className = 'btn btn-success';
-                btn.innerHTML = '<i class="fas fa-check"></i> Đã xác nhận thành công';
+                btn.innerHTML = '<i class="fas fa-check"></i> Đã xác nhận';
             } catch (error) {
-                console.error(error);
-                let msg = error.message;
-                if (error.code === 'permission-denied') msg = "Lỗi quyền ghi Database! Hãy kiểm tra Firestore Rules.";
-                alert("Lỗi: " + msg);
+                alert("Lỗi: " + error.message);
                 btn.disabled = false;
-                btn.innerHTML = 'Thử lại';
             }
         }
 
-        // --- 5. NOTIFICATION SYSTEM ---
+        // NOTIFICATION
         let isFirstLoad = true;
         function listenForNewDocs() {
-            db.collection('documents').orderBy('createdAt', 'desc').limit(1)
-                .onSnapshot(snapshot => {
-                    if (isFirstLoad) { isFirstLoad = false; return; }
-                    if (!snapshot.empty) {
-                        const data = snapshot.docs[0].data();
-                        // Nếu văn bản không phải do mình vừa up thì mới hiện thông báo
-                        if (data.createdBy !== currentUser.email) {
-                            showSystemNotification("Văn bản mới!", `Công ty vừa ban hành: ${data.title}`);
-                        }
-                    }
-                });
+            db.collection('documents').orderBy('createdAt', 'desc').limit(1).onSnapshot(snapshot => {
+                if (isFirstLoad) { isFirstLoad = false; return; }
+                if (!snapshot.empty) {
+                    const data = snapshot.docs[0].data();
+                    if (data.createdBy !== currentUser.email) showSystemNotification("Văn bản mới!", data.title);
+                }
+            });
         }
-
         function showSystemNotification(title, body) {
-            if (Notification.permission === "granted") {
-                new Notification(title, { 
-                    body: body, 
-                    icon: 'https://cdn-icons-png.flaticon.com/512/1042/1042390.png' 
-                });
-            }
+            if (Notification.permission === "granted") new Notification(title, { body: body, icon: 'https://cdn-icons-png.flaticon.com/512/1042/1042390.png' });
         }
     </script>
 </body>
