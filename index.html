@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cổng Phổ Biến Văn Bản - V1.16 Pro Admin</title>
+    <title>Cổng Phổ Biến Văn Bản - V1.17 Admin Pro</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
@@ -39,7 +39,7 @@
 
         /* Admin Specifics */
         .progress-thin { height: 6px; border-radius: 3px; }
-        .stat-card { border-left: 4px solid #004e9e; }
+        .btn-toolbar-custom .btn { border-radius: 20px; padding-left: 15px; padding-right: 15px; }
     </style>
 </head>
 <body>
@@ -89,14 +89,20 @@
 
             <div id="adminPanel" style="display:none;" class="mb-4">
                 
-                <div class="card shadow-sm border-0 mb-3">
-                    <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center">
-                        <h6 class="mb-0 fw-bold text-primary"><i class="fas fa-tasks me-2"></i>Quản trị hệ thống</h6>
-                        <button class="btn btn-sm btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#uploadCollapse">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h6 class="mb-0 fw-bold text-primary"><i class="fas fa-tasks me-2"></i>Quản trị hệ thống</h6>
+                    <div class="btn-toolbar-custom">
+                        <button class="btn btn-sm btn-outline-primary me-2" type="button" data-bs-toggle="collapse" data-bs-target="#staffCollapse" aria-expanded="false" aria-controls="staffCollapse">
+                            <i class="fas fa-users-cog me-1"></i> Danh sách nhân sự
+                        </button>
+                        <button class="btn btn-sm btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#uploadCollapse" aria-expanded="false" aria-controls="uploadCollapse">
                             <i class="fas fa-plus-circle me-1"></i> Tạo văn bản mới
                         </button>
                     </div>
-                    <div class="collapse" id="uploadCollapse">
+                </div>
+
+                <div class="collapse mb-3" id="uploadCollapse">
+                    <div class="card shadow-sm border-0">
                         <div class="card-body bg-light border-top">
                             <div class="row g-3">
                                 <div class="col-md-5">
@@ -126,43 +132,38 @@
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="col-md-4 mb-3">
-                        <div class="card shadow-sm border-0 h-100">
-                            <div class="card-header bg-white fw-bold">
-                                <i class="fas fa-users-cog me-2 text-warning"></i>Danh sách nhân sự
-                            </div>
-                            <div class="card-body">
-                                <p class="small text-muted">Paste danh sách email nhân viên (mỗi dòng 1 email) để tính % hoàn thành.</p>
-                                <textarea id="staffListInput" class="form-control mb-2 small" rows="5" placeholder="nhanvien1@hcmpc.com.vn&#10;nhanvien2@hcmpc.com.vn..."></textarea>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <span class="small fw-bold text-primary" id="staffCountDisplay">0 nhân viên</span>
-                                    <button onclick="saveStaffList()" class="btn btn-sm btn-outline-primary">Lưu danh sách</button>
-                                </div>
+                <div class="collapse mb-3" id="staffCollapse">
+                    <div class="card shadow-sm border-0">
+                        <div class="card-body">
+                            <label class="form-label small fw-bold text-primary">Cập nhật danh sách email nhân viên (Mỗi dòng 1 email)</label>
+                            <textarea id="staffListInput" class="form-control mb-2 small" rows="5" placeholder="nhanvien1@hcmpc.com.vn&#10;nhanvien2@hcmpc.com.vn..."></textarea>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="small fw-bold text-muted" id="staffCountDisplay">0 nhân viên</span>
+                                <button onclick="saveStaffList()" class="btn btn-sm btn-primary">
+                                    <i class="fas fa-save me-1"></i> Lưu danh sách
+                                </button>
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <div class="col-md-8 mb-3">
-                        <div class="card shadow-sm border-0 h-100">
-                            <div class="card-header bg-white fw-bold d-flex justify-content-between align-items-center">
-                                <span><i class="fas fa-chart-line me-2 text-info"></i>Tiến độ đơn vị</span>
-                                <button onclick="exportReport()" class="btn btn-sm btn-outline-success"><i class="fas fa-file-excel me-1"></i> Xuất Excel</button>
-                            </div>
-                            <div class="table-responsive">
-                                <table class="table table-hover align-middle mb-0 text-center small">
-                                    <thead class="table-light">
-                                        <tr>
-                                            <th class="text-start">Văn bản</th>
-                                            <th>Ngày BH</th>
-                                            <th>Hoàn thành</th>
-                                            <th>Thao tác</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="adminReportBody"></tbody>
-                                </table>
-                            </div>
-                        </div>
+                <div class="card shadow-sm border-0 h-100">
+                    <div class="card-header bg-white fw-bold d-flex justify-content-between align-items-center">
+                        <span><i class="fas fa-chart-line me-2 text-info"></i>Tiến độ đọc hiểu toàn đơn vị</span>
+                        <button onclick="exportReport()" class="btn btn-sm btn-outline-success"><i class="fas fa-file-excel me-1"></i> Xuất Excel</button>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0 text-center small">
+                            <thead class="table-light">
+                                <tr>
+                                    <th class="text-start">Văn bản</th>
+                                    <th>Ngày BH</th>
+                                    <th style="width: 30%;">Tiến độ hoàn thành</th>
+                                    <th>Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminReportBody"></tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -216,7 +217,7 @@
     </div>
 
     <div class="copyright">
-        © 2026 TCD Software - Liên hệ 0963.292.882
+        © 2026 TCD Software - version 1.7 - Liên hệ 0963.292.882
     </div>
 
     <div class="modal fade" id="detailModal" tabindex="-1">
@@ -352,6 +353,8 @@
                 .then(() => {
                     staffList = list;
                     document.getElementById('staffCountDisplay').innerText = `${list.length} nhân viên`;
+                    // Đóng collapse sau khi lưu
+                    new bootstrap.Collapse(document.getElementById('staffCollapse'), { toggle: true }).hide();
                     alert("Đã lưu danh sách nhân viên!");
                     loadAdminStats(); // Refresh stats
                 });
@@ -400,6 +403,9 @@
                 document.getElementById('docTitleInput').value = '';
                 document.getElementById('fileInput').value = '';
                 document.getElementById('pageCountInput').value = '';
+                // Đóng collapse
+                new bootstrap.Collapse(document.getElementById('uploadCollapse'), { toggle: true }).hide();
+                
                 btn.disabled = false;
                 statusLog.innerText = "";
             } catch (error) {
@@ -441,7 +447,7 @@
 
                 tbody.innerHTML += `
                     <tr>
-                        <td class="text-start text-truncate" style="max-width: 200px;" title="${doc.title}">${doc.title}</td>
+                        <td class="text-start text-truncate" style="max-width: 250px;" title="${doc.title}">${doc.title}</td>
                         <td>${date}</td>
                         <td>
                             <div class="progress progress-thin mb-1">
@@ -480,6 +486,15 @@
         }
 
         function exportReport() {
+            // Generate filename with format: xacnhandocvb_ddMMyy_HHmm.xlsx
+            const now = new Date();
+            const day = String(now.getDate()).padStart(2, '0');
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const year = String(now.getFullYear()).slice(2);
+            const hour = String(now.getHours()).padStart(2, '0');
+            const minute = String(now.getMinutes()).padStart(2, '0');
+            const fileName = `xacnhandocvb_${day}${month}${year}_${hour}${minute}.xlsx`;
+
             // Flatten data for Excel
             const data = [];
             Object.values(docsStats).forEach(doc => {
@@ -497,10 +512,10 @@
             const ws = XLSX.utils.json_to_sheet(data);
             const wb = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(wb, ws, "Báo cáo đọc hiểu");
-            XLSX.writeFile(wb, "Bao_cao_van_ban_so.xlsx");
+            XLSX.writeFile(wb, fileName);
         }
 
-        // --- USER & GENERAL LOGIC (Keep existing) ---
+        // --- USER & GENERAL LOGIC ---
         function setupUserView() {
             document.getElementById('adminPanel').style.display = 'none';
             document.getElementById('userPanel').style.display = 'block';
@@ -516,7 +531,6 @@
             });
         }
 
-        // ... (User rendering & Auth functions similar to V1.15) ...
         async function handleLogin() {
             const email = document.getElementById('emailInput').value;
             const password = document.getElementById('passwordInput').value;
