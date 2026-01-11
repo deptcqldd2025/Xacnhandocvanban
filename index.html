@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cổng Phổ Biến Văn Bản - V1.17 Admin Pro</title>
+    <title>Cổng Phổ Biến Văn Bản - V1.19 HRM</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
@@ -11,7 +11,7 @@
     <style>
         body { background-color: #f0f2f5; font-family: 'Roboto', sans-serif; color: #333; display: flex; flex-direction: column; min-height: 100vh; }
         
-        /* LOGIN STYLES */
+        /* LOGIN */
         .login-wrapper { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; background: #fff; }
         .login-container { width: 100%; max-width: 400px; text-align: center; }
         .evn-logo-full { width: 100%; max-width: 280px; height: auto; margin-bottom: 25px; display: block; margin-left: auto; margin-right: auto; }
@@ -25,7 +25,7 @@
         .btn-login-custom { background-color: #004e9e; border: none; border-radius: 8px; color: white; font-weight: 700; text-transform: uppercase; padding: 12px; width: 100%; margin-top: 10px; }
         .btn-login-custom:hover { background-color: #003a75; }
         
-        /* MAIN APP STYLES */
+        /* APP */
         .main-app { display: none; width: 100%; flex: 1; padding-top: 20px; padding-bottom: 40px; }
         .viewer-container { position: relative; height: 75vh; border: 1px solid #ddd; border-radius: 8px; overflow: hidden; background: #fff; }
         .doc-viewer { width: 100%; height: 100%; border: none; }
@@ -33,13 +33,16 @@
         .list-group-item.active { background-color: #e7f1ff; color: #000; border-color: #dee2e6; }
         .doc-read-indicator { font-size: 0.85em; font-weight: bold; color: #198754; }
         
-        /* FOOTER (Shared) */
+        /* FOOTER */
         .copyright { margin-top: auto; padding: 20px; text-align: center; color: #adb5bd; font-size: 0.8rem; width: 100%; background: #fff; border-top: 1px solid #eee; }
         .main-app .copyright { background: #f0f2f5; border: none; }
 
         /* Admin Specifics */
         .progress-thin { height: 6px; border-radius: 3px; }
         .btn-toolbar-custom .btn { border-radius: 20px; padding-left: 15px; padding-right: 15px; }
+        /* Staff Table */
+        .staff-table-container { max-height: 400px; overflow-y: auto; font-size: 0.85rem; border: 1px solid #eee; }
+        .staff-table th { background: #f8f9fa; position: sticky; top: 0; }
     </style>
 </head>
 <body>
@@ -92,10 +95,10 @@
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h6 class="mb-0 fw-bold text-primary"><i class="fas fa-tasks me-2"></i>Quản trị hệ thống</h6>
                     <div class="btn-toolbar-custom">
-                        <button class="btn btn-sm btn-outline-primary me-2" type="button" data-bs-toggle="collapse" data-bs-target="#staffCollapse" aria-expanded="false" aria-controls="staffCollapse">
-                            <i class="fas fa-users-cog me-1"></i> Danh sách nhân sự
+                        <button class="btn btn-sm btn-outline-primary me-2" type="button" data-bs-toggle="collapse" data-bs-target="#staffCollapse">
+                            <i class="fas fa-users me-1"></i> Quản lý Nhân sự
                         </button>
-                        <button class="btn btn-sm btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#uploadCollapse" aria-expanded="false" aria-controls="uploadCollapse">
+                        <button class="btn btn-sm btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#uploadCollapse">
                             <i class="fas fa-plus-circle me-1"></i> Tạo văn bản mới
                         </button>
                     </div>
@@ -134,14 +137,37 @@
 
                 <div class="collapse mb-3" id="staffCollapse">
                     <div class="card shadow-sm border-0">
-                        <div class="card-body">
-                            <label class="form-label small fw-bold text-primary">Cập nhật danh sách email nhân viên (Mỗi dòng 1 email)</label>
-                            <textarea id="staffListInput" class="form-control mb-2 small" rows="5" placeholder="nhanvien1@hcmpc.com.vn&#10;nhanvien2@hcmpc.com.vn..."></textarea>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <span class="small fw-bold text-muted" id="staffCountDisplay">0 nhân viên</span>
-                                <button onclick="saveStaffList()" class="btn btn-sm btn-primary">
-                                    <i class="fas fa-save me-1"></i> Lưu danh sách
+                        <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                            <span class="fw-bold">Danh sách nhân sự</span>
+                            <div>
+                                <input type="file" id="staffExcelInput" accept=".xlsx, .xls, .csv" style="display: none;" onchange="handleStaffExcelUpload()">
+                                <button onclick="document.getElementById('staffExcelInput').click()" class="btn btn-sm btn-outline-success me-2">
+                                    <i class="fas fa-file-excel me-1"></i> Nhập từ Excel
                                 </button>
+                                <button onclick="saveStaffList()" class="btn btn-sm btn-primary">
+                                    <i class="fas fa-save me-1"></i> Lưu lại
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="staff-table-container">
+                                <table class="table table-hover table-striped mb-0 staff-table">
+                                    <thead>
+                                        <tr>
+                                            <th>MSNV</th>
+                                            <th>Họ và tên</th>
+                                            <th>Đơn vị</th>
+                                            <th>Email</th>
+                                            <th>SĐT</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="staffTableBody">
+                                        <tr><td colspan="5" class="text-center text-muted py-3">Chưa có dữ liệu. Vui lòng nhập file Excel.</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="p-2 text-end small text-muted bg-light">
+                                Tổng số: <span id="staffCountDisplay" class="fw-bold">0</span> nhân viên
                             </div>
                         </div>
                     </div>
@@ -150,7 +176,7 @@
                 <div class="card shadow-sm border-0 h-100">
                     <div class="card-header bg-white fw-bold d-flex justify-content-between align-items-center">
                         <span><i class="fas fa-chart-line me-2 text-info"></i>Tiến độ đọc hiểu toàn đơn vị</span>
-                        <button onclick="exportReport()" class="btn btn-sm btn-outline-success"><i class="fas fa-file-excel me-1"></i> Xuất Excel</button>
+                        <button onclick="exportReport()" class="btn btn-sm btn-outline-success"><i class="fas fa-file-excel me-1"></i> Xuất Báo cáo</button>
                     </div>
                     <div class="table-responsive">
                         <table class="table table-hover align-middle mb-0 text-center small">
@@ -217,7 +243,7 @@
     </div>
 
     <div class="copyright">
-        © 2026 TCD Software - version 1.7 - Liên hệ 0963.292.882
+        © 2026 TCD Software - version 1.19 - Liên hệ 0963.292.882
     </div>
 
     <div class="modal fade" id="detailModal" tabindex="-1">
@@ -257,7 +283,6 @@
 
         // --- CONFIGURATION ---
         const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyqgLvaQbt1dIpQhYedIGURkPBuRZ-i-mJWe_qUBIN9mUOP7Oy0CQI9h3u6fzxfW-Xrkw/exec"; 
-        
         const firebaseConfig = {
             apiKey: "AIzaSyDC2PzQxU5K3PaoPIMTW7niXeMEHDOLM8I",
             authDomain: "xacnhandocvanban.firebaseapp.com",
@@ -267,7 +292,6 @@
             appId: "1:352352957922:web:6b74ae47b238bf00d335bb",
             measurementId: "G-G87Z9DV9R7"
         };
-        
         if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
@@ -275,9 +299,9 @@
         // STATE
         let currentUser = null;
         let isAdmin = false;
-        let staffList = []; // Danh sách nhân viên
-        let docsStats = {}; // Thống kê
-        let readsData = []; // Dữ liệu đọc
+        let staffList = []; // Array of objects: {msnv, name, unit, email, phone}
+        let docsStats = {}; 
+        let readsData = []; 
 
         // AUTH
         auth.onAuthStateChanged(user => {
@@ -292,7 +316,6 @@
                 
                 if (isAdmin) setupAdminView();
                 else setupUserView();
-                
                 listenForNewDocs();
             } else {
                 document.getElementById('loginScreen').style.display = 'flex';
@@ -300,13 +323,12 @@
             }
         });
 
-        // --- PDF PAGE COUNTING LOGIC ---
+        // --- PDF LOGIC ---
         async function handleFileSelect() {
             const fileInput = document.getElementById('fileInput');
             const pageInput = document.getElementById('pageCountInput');
             const timeInput = document.getElementById('docTimeInput');
             const file = fileInput.files[0];
-
             if (file) {
                 const reader = new FileReader();
                 reader.onload = async function(e) {
@@ -315,48 +337,108 @@
                         const pdf = await pdfjsLib.getDocument(typedarray).promise;
                         const pages = pdf.numPages;
                         pageInput.value = pages;
-                        // Tự động tính thời gian: 15s mỗi trang
                         timeInput.value = pages * 15; 
-                    } catch (error) {
-                        console.error(error);
-                        pageInput.value = "";
-                        alert("Không đọc được số trang PDF. Vui lòng nhập thủ công.");
-                    }
+                    } catch (error) { console.error(error); pageInput.value = ""; }
                 };
                 reader.readAsArrayBuffer(file);
             }
         }
 
-        // --- ADMIN: STAFF MANAGEMENT ---
+        // --- ADMIN: STAFF MANAGEMENT (NEW) ---
         function setupAdminView() {
             document.getElementById('adminPanel').style.display = 'block';
             document.getElementById('userPanel').style.display = 'none'; 
             document.getElementById('adminBadge').style.display = 'inline-block';
             
-            // Load Staff List
+            // Load Staff
             db.collection('settings').doc('staff').get().then(doc => {
                 if (doc.exists && doc.data().list) {
                     staffList = doc.data().list;
-                    document.getElementById('staffListInput').value = staffList.join('\n');
-                    document.getElementById('staffCountDisplay').innerText = `${staffList.length} nhân viên`;
+                    renderStaffTable(staffList);
                 }
             });
-            
             loadAdminStats();
         }
 
+        function handleStaffExcelUpload() {
+            const fileInput = document.getElementById('staffExcelInput');
+            const file = fileInput.files[0];
+            if(!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const data = new Uint8Array(e.target.result);
+                const workbook = XLSX.read(data, {type: 'array'});
+                const sheetName = workbook.SheetNames[0];
+                const worksheet = workbook.Sheets[sheetName];
+                const json = XLSX.utils.sheet_to_json(worksheet, { header: 1 }); // Array of arrays
+
+                // Parse columns: Tim cac cot MSNV, Don vi, Ho ten, Email, SDT
+                // Header row index usually 0
+                const header = json[0].map(h => String(h).trim().toLowerCase());
+                
+                // Helper to find index
+                const idxMSNV = header.findIndex(h => h.includes('msnv'));
+                const idxUnit = header.findIndex(h => h.includes('đơn vị'));
+                const idxName = header.findIndex(h => h.includes('họ và tên') || h.includes('họ tên'));
+                const idxEmail = header.findIndex(h => h.includes('email'));
+                const idxPhone = header.findIndex(h => h.includes('đtdđ') || h.includes('điện thoại'));
+
+                if(idxMSNV === -1 || idxEmail === -1) {
+                    alert("File Excel thiếu cột MSNV hoặc Email!");
+                    return;
+                }
+
+                const newStaffList = [];
+                // Start from row 1
+                for(let i=1; i<json.length; i++) {
+                    const row = json[i];
+                    if(!row[idxEmail]) continue; // Skip empty email
+                    
+                    newStaffList.push({
+                        msnv: row[idxMSNV] || '',
+                        unit: row[idxUnit] || '',
+                        name: row[idxName] || '',
+                        email: String(row[idxEmail]).trim().toLowerCase(),
+                        phone: row[idxPhone] || ''
+                    });
+                }
+
+                if(newStaffList.length > 0) {
+                    staffList = newStaffList;
+                    renderStaffTable(staffList);
+                    alert(`Đã đọc ${newStaffList.length} nhân viên từ Excel. Hãy bấm "Lưu lại" để cập nhật.`);
+                } else {
+                    alert("Không tìm thấy dữ liệu hợp lệ trong file.");
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        function renderStaffTable(list) {
+            const tbody = document.getElementById('staffTableBody');
+            tbody.innerHTML = '';
+            document.getElementById('staffCountDisplay').innerText = list.length;
+
+            list.forEach(s => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${s.msnv}</td>
+                        <td>${s.name}</td>
+                        <td>${s.unit}</td>
+                        <td>${s.email}</td>
+                        <td>${s.phone}</td>
+                    </tr>
+                `;
+            });
+        }
+
         function saveStaffList() {
-            const raw = document.getElementById('staffListInput').value;
-            const list = raw.split('\n').map(e => e.trim()).filter(e => e.length > 5); // Basic validation
-            
-            db.collection('settings').doc('staff').set({ list: list })
+            db.collection('settings').doc('staff').set({ list: staffList })
                 .then(() => {
-                    staffList = list;
-                    document.getElementById('staffCountDisplay').innerText = `${list.length} nhân viên`;
-                    // Đóng collapse sau khi lưu
                     new bootstrap.Collapse(document.getElementById('staffCollapse'), { toggle: true }).hide();
-                    alert("Đã lưu danh sách nhân viên!");
-                    loadAdminStats(); // Refresh stats
+                    alert("Đã lưu danh sách nhân viên thành công!");
+                    loadAdminStats(); 
                 });
         }
 
@@ -399,11 +481,9 @@
 
                 statusLog.innerText = "Thành công!";
                 alert("Đã phát hành!");
-                // Clear form
                 document.getElementById('docTitleInput').value = '';
                 document.getElementById('fileInput').value = '';
                 document.getElementById('pageCountInput').value = '';
-                // Đóng collapse
                 new bootstrap.Collapse(document.getElementById('uploadCollapse'), { toggle: true }).hide();
                 
                 btn.disabled = false;
@@ -414,21 +494,16 @@
             }
         }
 
-        // --- ADMIN: STATS & REPORT ---
+        // --- ADMIN: STATS & REPORT (UPDATED) ---
         function loadAdminStats() {
-            // 1. Get all reads
             db.collection('reads').onSnapshot(snapshot => {
                 readsData = [];
                 snapshot.forEach(doc => readsData.push(doc.data()));
                 renderAdminTable();
             });
-            
-            // 2. Get documents
             db.collection('documents').orderBy('createdAt', 'desc').onSnapshot(snapshot => {
                 docsStats = {};
-                snapshot.forEach(doc => {
-                    docsStats[doc.id] = { ...doc.data(), id: doc.id };
-                });
+                snapshot.forEach(doc => { docsStats[doc.id] = { ...doc.data(), id: doc.id }; });
                 renderAdminTable();
             });
         }
@@ -436,10 +511,9 @@
         function renderAdminTable() {
             const tbody = document.getElementById('adminReportBody');
             tbody.innerHTML = '';
-            const totalStaff = staffList.length || 1; // Avoid divide by zero
+            const totalStaff = staffList.length || 1; 
 
             Object.values(docsStats).forEach(doc => {
-                // Count distinct readers for this doc
                 const readers = new Set(readsData.filter(r => r.docId === doc.id).map(r => r.userEmail));
                 const count = readers.size;
                 const percent = Math.round((count / totalStaff) * 100);
@@ -469,53 +543,54 @@
             const doc = docsStats[docId];
             const readers = new Set(readsData.filter(r => r.docId === docId).map(r => r.userEmail));
             
-            const readList = Array.from(readers);
-            const unreadList = staffList.filter(email => !readers.has(email));
+            // Map email to Staff Object
+            const readListObj = staffList.filter(s => readers.has(s.email));
+            const unreadListObj = staffList.filter(s => !readers.has(s.email));
 
             document.getElementById('detailModalTitle').innerText = doc.title;
-            document.getElementById('countRead').innerText = readList.length;
-            document.getElementById('countUnread').innerText = unreadList.length;
+            document.getElementById('countRead').innerText = readListObj.length;
+            document.getElementById('countUnread').innerText = unreadListObj.length;
 
             const ulRead = document.getElementById('listRead');
-            ulRead.innerHTML = readList.length ? readList.map(e => `<li class="list-group-item"><i class="fas fa-check text-success me-2"></i>${e}</li>`).join('') : '<li class="list-group-item text-muted">Chưa có ai</li>';
+            ulRead.innerHTML = readListObj.length 
+                ? readListObj.map(s => `<li class="list-group-item small"><i class="fas fa-check text-success me-2"></i><b>${s.name}</b> (${s.unit})</li>`).join('') 
+                : '<li class="list-group-item text-muted">Chưa có ai</li>';
 
             const ulUnread = document.getElementById('listUnread');
-            ulUnread.innerHTML = unreadList.length ? unreadList.map(e => `<li class="list-group-item"><i class="fas fa-times text-danger me-2"></i>${e}</li>`).join('') : '<li class="list-group-item text-muted">Đã đọc hết</li>';
+            ulUnread.innerHTML = unreadListObj.length 
+                ? unreadListObj.map(s => `<li class="list-group-item small"><i class="fas fa-times text-danger me-2"></i><b>${s.name}</b> (${s.unit})</li>`).join('') 
+                : '<li class="list-group-item text-muted">Đã đọc hết</li>';
 
             new bootstrap.Modal(document.getElementById('detailModal')).show();
         }
 
         function exportReport() {
-            // Generate filename with format: xacnhandocvb_ddMMyy_HHmm.xlsx
             const now = new Date();
-            const day = String(now.getDate()).padStart(2, '0');
-            const month = String(now.getMonth() + 1).padStart(2, '0');
-            const year = String(now.getFullYear()).slice(2);
-            const hour = String(now.getHours()).padStart(2, '0');
-            const minute = String(now.getMinutes()).padStart(2, '0');
-            const fileName = `xacnhandocvb_${day}${month}${year}_${hour}${minute}.xlsx`;
+            const fileName = `xacnhandocvb_${String(now.getDate()).padStart(2,'0')}${String(now.getMonth()+1).padStart(2,'0')}${String(now.getFullYear()).slice(2)}_${String(now.getHours()).padStart(2,'0')}${String(now.getMinutes()).padStart(2,'0')}.xlsx`;
 
-            // Flatten data for Excel
             const data = [];
             Object.values(docsStats).forEach(doc => {
                 const readers = new Set(readsData.filter(r => r.docId === doc.id).map(r => r.userEmail));
-                staffList.forEach(email => {
+                staffList.forEach(s => {
                     data.push({
-                        "Văn bản": doc.title,
+                        "Tên văn bản": doc.title,
                         "Ngày ban hành": doc.createdAt ? doc.createdAt.toDate().toLocaleDateString('vi-VN') : '',
-                        "Nhân viên": email,
-                        "Trạng thái": readers.has(email) ? "Đã đọc" : "Chưa đọc"
+                        "MSNV": s.msnv,
+                        "Họ và tên": s.name,
+                        "Đơn vị": s.unit,
+                        "Email": s.email,
+                        "Trạng thái": readers.has(s.email) ? "Đã đọc" : "Chưa đọc"
                     });
                 });
             });
 
             const ws = XLSX.utils.json_to_sheet(data);
             const wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, "Báo cáo đọc hiểu");
+            XLSX.utils.book_append_sheet(wb, ws, "Báo cáo");
             XLSX.writeFile(wb, fileName);
         }
 
-        // --- USER & GENERAL LOGIC ---
+        // --- USER LOGIC ---
         function setupUserView() {
             document.getElementById('adminPanel').style.display = 'none';
             document.getElementById('userPanel').style.display = 'block';
