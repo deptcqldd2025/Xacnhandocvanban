@@ -15,7 +15,7 @@
             color: #333;
         }
 
-        /* --- LOGIN SCREEN STYLES (MATCHING REFERENCE) --- */
+        /* --- LOGIN SCREEN STYLES --- */
         .login-wrapper { 
             min-height: 100vh; 
             display: flex; 
@@ -31,33 +31,21 @@
             text-align: center;
         }
 
-        /* Logo & Header */
-        .evn-logo-img {
-            width: 80px;
+        /* Logo Mới */
+        .evn-logo-full {
+            width: 100%; /* Chiếm toàn bộ chiều rộng container */
+            max-width: 280px; /* Giới hạn kích thước tối đa cho đẹp */
             height: auto;
-            margin-bottom: 10px;
-        }
-
-        .brand-text {
-            color: #00367e; /* EVN Blue */
-            font-weight: 900;
-            font-size: 1.4rem;
-            margin: 0;
-            line-height: 1.2;
-        }
-        
-        .brand-subtext {
-            color: #00367e;
-            font-weight: 700;
-            font-size: 1rem;
-            margin-bottom: 20px;
-            text-transform: uppercase;
+            margin-bottom: 25px; /* Tạo khoảng cách với tiêu đề app */
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .app-title {
-            color: #004e9e;
+            color: #004e9e; /* EVN Blue */
             font-weight: 700;
-            font-size: 1.3rem;
+            font-size: 1.4rem;
             text-transform: uppercase;
             margin-bottom: 5px;
         }
@@ -160,7 +148,7 @@
             font-size: 0.8rem;
         }
 
-        /* --- APP MAIN INTERFACE (Hidden by default) --- */
+        /* --- APP MAIN INTERFACE --- */
         .main-app { display: none; padding-top: 20px; padding-bottom: 60px; background-color: #f0f2f5; min-height: 100vh; }
         .viewer-container { position: relative; height: 75vh; border: 1px solid #ddd; border-radius: 8px; overflow: hidden; background: #fff; }
         .doc-viewer { width: 100%; height: 100%; border: none; }
@@ -175,10 +163,8 @@
 
     <div id="loginScreen" class="login-wrapper">
         <div class="login-container">
-            <div class="mb-4">
-                <img src="https://upload.wikimedia.org/wikipedia/vi/1/1a/Logo_t%E1%BA%ADp_%C4%91o%C3%A0n_%C4%91i%E1%BB%87n_l%E1%BB%B1c.png" alt="EVN Logo" class="evn-logo-img">
-                <h1 class="brand-text">EVN<span style="color:#ed1c24">HCMC</span></h1>
-                <h2 class="brand-subtext">CÔNG TY LƯỚI ĐIỆN CAO THẾ<br>THÀNH PHỐ HỒ CHÍ MINH</h2>
+            <div class="mb-2">
+                <img src="logo_doc_ct.png" alt="EVNHCMC Logo" class="evn-logo-full">
             </div>
 
             <h3 class="app-title">CỔNG VĂN BẢN SỐ</h3>
@@ -219,8 +205,8 @@
         <div class="container">
             <nav class="navbar navbar-light bg-white rounded shadow-sm mb-4 px-3">
                 <div class="d-flex align-items-center">
-                    <img src="https://upload.wikimedia.org/wikipedia/vi/1/1a/Logo_t%E1%BA%ADp_%C4%91o%C3%A0n_%C4%91i%E1%BB%87n_l%E1%BB%B1c.png" width="30" class="me-2">
-                    <span class="fw-bold text-dark">Cổng Văn Bản Số</span>
+                    <img src="logo_doc_ct.png" style="height: 40px; width: auto;" class="me-2">
+                    <span class="fw-bold text-dark d-none d-md-block">Cổng Văn Bản Số</span>
                     <span class="badge bg-danger ms-2" id="adminBadge" style="display:none">ADMIN</span>
                 </div>
                 <div class="d-flex align-items-center">
@@ -335,7 +321,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 
     <script>
-        // --- UI FUNCTION: TOGGLE PASSWORD ---
+        // --- UI: TOGGLE PASSWORD ---
         function togglePassword() {
             const input = document.getElementById('passwordInput');
             const icon = document.getElementById('eyeIcon');
@@ -348,7 +334,7 @@
             }
         }
 
-        // --- BACKEND LOGIC (KEPT INTACT FROM V1.12) ---
+        // --- BACKEND LOGIC ---
         const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyqgLvaQbt1dIpQhYedIGURkPBuRZ-i-mJWe_qUBIN9mUOP7Oy0CQI9h3u6fzxfW-Xrkw/exec"; 
         
         const firebaseConfig = {
@@ -389,7 +375,7 @@
                 else setupUserView();
                 listenForNewDocs();
             } else {
-                document.getElementById('loginScreen').style.display = 'flex'; // Flex for centering
+                document.getElementById('loginScreen').style.display = 'flex';
                 document.getElementById('mainApp').style.display = 'none';
             }
         });
